@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
 public class GalleryFragment extends Fragment {
 
     ArrayAdapter<String> mGalleryAdapter;
+    String mResponse;
 
     public GalleryFragment(){
     }
@@ -29,25 +32,26 @@ public class GalleryFragment extends Fragment {
         Resources res = getResources();
         String[] testItems = res.getStringArray(R.array.test_array);
 
+        //Fetch data from the internet
+        try {
+            mResponse = new GalleryContentTask()
+                    .execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key="+BuildConfig.THE_MOVIE_DB_API_KEY)
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        //TODO: parse response: get all images refs
+
+        //Prepare adapter for the gallery
         mGalleryAdapter = new ArrayAdapter<>(getActivity(), R.layout.gallery_cell, R.id.test_textview, testItems);
 
         GridView gallery = (GridView) rootView.findViewById(R.id.gallery_grid);
 
         gallery.setAdapter(mGalleryAdapter);
 
-        TextView request_text = (TextView) rootView.findViewById(R.id.request_text);
-
-        try {
-            request_text.setText(new GalleryContentTask()
-                    .execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key="+BuildConfig.THE_MOVIE_DB_API_KEY)
-                    .get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
         return rootView;
 
-//
 //        forecastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -60,5 +64,11 @@ public class GalleryFragment extends Fragment {
 //
 //        return rootView;
 
+    }
+
+    public String[] getPosters(String string) throws JSONException {
+        JSONObject jsonObject = new JSONObject(string);
+
+        return null;
     }
 }
