@@ -63,7 +63,6 @@ public class GalleryFragment extends Fragment {
 //        });
 //
 //        return rootView;
-
     }
 
     public String[] getPosters(String string) throws JSONException {
