@@ -1,7 +1,6 @@
 package ua.com.elius.eugene.popularmovies;
 
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +24,9 @@ public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = this.getClass().getSimpleName();
 
-    ArrayAdapter<String> mGalleryAdapter;
+    ArrayAdapter<ImageView> mGalleryAdapter;
     String mResponse;
+    ArrayList<String> postersRefs;
 
     public GalleryFragment(){
     }
@@ -34,13 +37,10 @@ public class GalleryFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        Resources res = getResources();
-        String[] testItems = res.getStringArray(R.array.test_array);
-
         //Fetch data from the internet
         try {
             mResponse = new GalleryContentTask()
-                    .execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key="+BuildConfig.THE_MOVIE_DB_API_KEY)
+                    .execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -48,17 +48,20 @@ public class GalleryFragment extends Fragment {
 
         //parse response: get all images refs
         try {
-            getPosters(mResponse);
+            postersRefs = getPosters(mResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //Prepare adapter for the gallery
-        mGalleryAdapter = new ArrayAdapter<>(getActivity(), R.layout.gallery_cell, R.id.test_textview, testItems);
+        mGalleryAdapter = new ArrayAdapter<>(getActivity(), R.layout.gallery_cell, R.id.image_cell, postersRefs);
 
         GridView gallery = (GridView) rootView.findViewById(R.id.gallery_grid);
 
         gallery.setAdapter(mGalleryAdapter);
+
+        ImageView test_image = (ImageView) rootView.findViewById(R.id.test_image);
+        Picasso.with(rootView.getContext()).load("http://i.imgur.com/DvpvklR.png").into(test_image);
 
         return rootView;
 
