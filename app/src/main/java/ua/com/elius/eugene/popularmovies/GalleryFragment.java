@@ -86,6 +86,7 @@ public class GalleryFragment extends Fragment {
         {
             JSONObject oneObject = jArray.getJSONObject(i);
             String posterPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString("poster_path");
+            posters.add(posterPath);
             Log.d(LOG_TAG, posterPath);
         }
 
