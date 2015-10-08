@@ -4,18 +4,23 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class GalleryFragment extends Fragment {
+
+    public final String LOG_TAG = this.getClass().getSimpleName();
 
     ArrayAdapter<String> mGalleryAdapter;
     String mResponse;
@@ -41,7 +46,12 @@ public class GalleryFragment extends Fragment {
             e.printStackTrace();
         }
 
-        //TODO: parse response: get all images refs
+        //parse response: get all images refs
+        try {
+            getPosters(mResponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Prepare adapter for the gallery
         mGalleryAdapter = new ArrayAdapter<>(getActivity(), R.layout.gallery_cell, R.id.test_textview, testItems);
@@ -65,9 +75,20 @@ public class GalleryFragment extends Fragment {
 //        return rootView;
     }
 
-    public String[] getPosters(String string) throws JSONException {
-        JSONObject jsonObject = new JSONObject(string);
+    public ArrayList<String> getPosters(String string) throws JSONException {
 
-        return null;
+        ArrayList<String> posters = new ArrayList<>();
+
+        JSONObject jObject = new JSONObject(string);
+        JSONArray jArray = jObject.getJSONArray("results");
+
+        for (int i=0; i < jArray.length(); i++)
+        {
+            JSONObject oneObject = jArray.getJSONObject(i);
+            String posterPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString("poster_path");
+            Log.d(LOG_TAG, posterPath);
+        }
+
+        return posters;
     }
 }
