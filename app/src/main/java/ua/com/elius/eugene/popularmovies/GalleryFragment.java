@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -57,7 +58,7 @@ public class GalleryFragment extends Fragment {
 
         //preparing gallery
         GridView gridview = (GridView) rootView.findViewById(R.id.gallery_grid);
-        gridview.setAdapter(new ImageAdapter(getActivity()));
+        gridview.setAdapter(new ImageAdapter(rootView.getContext()));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -118,13 +119,14 @@ public class GalleryFragment extends Fragment {
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(185, 248));
+                imageView.setLayoutParams(new GridView.LayoutParams( GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.MATCH_PARENT));
+
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //                imageView.setPadding(8, 8, 8, 8);
             } else {
                 imageView = (ImageView) convertView;
             }
-            Picasso.with(getContext()).load(postersRefs.get(position)).into(imageView);
+            Picasso.with(getActivity()).load(postersRefs.get(position)).into(imageView);
 
 //            imageView.setImageResource(mThumbIds[position]);
 
