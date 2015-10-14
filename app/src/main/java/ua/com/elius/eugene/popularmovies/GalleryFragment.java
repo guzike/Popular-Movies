@@ -28,6 +28,7 @@ public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = this.getClass().getSimpleName();
 
+
     public String mResponse;
     public ArrayList<String> postersRefs;
 
@@ -119,7 +120,10 @@ public class GalleryFragment extends Fragment {
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams( GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.MATCH_PARENT));
+
+                float scale= mContext.getResources().getDisplayMetrics().density;
+                int pixels = (int) (250 * scale + 0.5f);
+                imageView.setLayoutParams(new GridView.LayoutParams( GridLayout.LayoutParams.MATCH_PARENT, pixels));
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //                imageView.setPadding(8, 8, 8, 8);
