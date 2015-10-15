@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -116,14 +116,29 @@ public class GalleryFragment extends Fragment {
         // create a new ImageView for each item referenced by the Adapter
 
         public View getView(int position, View convertView, ViewGroup parent) {
+            int imgWidth;
+            int imgHeight;
+
+            DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+
+            if (mContext.getResources().getConfiguration().orientation == 1) {
+                int pxWidth = displayMetrics.widthPixels;
+                imgWidth = pxWidth / 2;
+                imgHeight =(imgWidth * 278) / 185;
+            }else {
+                int pxWidth = displayMetrics.widthPixels;
+                imgWidth = pxWidth / 4;
+                imgHeight =(imgWidth * 278) / 185;
+            }
+
             ImageView imageView;
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
 
-                float scale= mContext.getResources().getDisplayMetrics().density;
-                int pixels = (int) (250 * scale + 0.5f);
-                imageView.setLayoutParams(new GridView.LayoutParams( GridLayout.LayoutParams.MATCH_PARENT, pixels));
+//                float scale= mContext.getResources().getDisplayMetrics().density;
+//                int pixels = (int) (270 * scale + 0.5f);
+                imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //                imageView.setPadding(8, 8, 8, 8);
