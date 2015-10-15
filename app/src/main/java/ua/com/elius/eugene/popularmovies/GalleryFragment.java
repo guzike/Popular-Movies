@@ -31,6 +31,7 @@ public class GalleryFragment extends Fragment {
 
     public String mResponse;
     public ArrayList<String> postersRefs;
+    public GridView gridview;
 
     public GalleryFragment(){
     }
@@ -58,7 +59,7 @@ public class GalleryFragment extends Fragment {
         }
 
         //preparing gallery
-        GridView gridview = (GridView) rootView.findViewById(R.id.gallery_grid);
+        gridview = (GridView) rootView.findViewById(R.id.gallery_grid);
         gridview.setAdapter(new ImageAdapter(rootView.getContext()));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,32 +137,19 @@ public class GalleryFragment extends Fragment {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
 
-//                float scale= mContext.getResources().getDisplayMetrics().density;
-//                int pixels = (int) (270 * scale + 0.5f);
                 imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                imageView.setPadding(8, 8, 8, 8);
+
+                gridview.setColumnWidth(imgWidth);
+
             } else {
                 imageView = (ImageView) convertView;
             }
             Picasso.with(getActivity()).load(postersRefs.get(position)).into(imageView);
 
-//            imageView.setImageResource(mThumbIds[position]);
-
             return imageView;
         }
-
-//        @Override
-//        public void getView(int position, View convertView, ViewGroup parent) {
-//            SquaredImageView view = (SquaredImageView) convertView;
-//            if (view == null) {
-//                view = new SquaredImageView(context);
-//            }
-//            String url = getItem(position);
-//
-//            Picasso.with(context).load(url).into(view);
-//        }
 
     }
 }
