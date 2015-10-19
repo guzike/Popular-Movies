@@ -122,15 +122,15 @@ public class GalleryFragment extends Fragment {
 
             DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
 
+            int pxWidth = displayMetrics.widthPixels;
+
             if (mContext.getResources().getConfiguration().orientation == 1) {
-                int pxWidth = displayMetrics.widthPixels;
                 imgWidth = pxWidth / 2;
-                imgHeight =(imgWidth * 278) / 185;
             }else {
-                int pxWidth = displayMetrics.widthPixels;
                 imgWidth = pxWidth / 4;
-                imgHeight =(imgWidth * 278) / 185;
             }
+
+            imgHeight =(imgWidth * 278) / 185;
 
             ImageView imageView;
             if (convertView == null) {
