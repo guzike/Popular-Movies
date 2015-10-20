@@ -2,11 +2,15 @@ package ua.com.elius.eugene.popularmovies;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 
 public class GalleryFragment extends Fragment {
 
-    public final String LOG_TAG = this.getClass().getSimpleName();
+    public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
 
     public String mResponse;
@@ -34,6 +38,27 @@ public class GalleryFragment extends Fragment {
     public GridView gridview;
 
     public GalleryFragment(){
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.gallery_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings){
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Nullable
