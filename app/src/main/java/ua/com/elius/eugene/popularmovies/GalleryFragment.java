@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,10 +33,10 @@ public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
-
     public String mResponse;
-    public ArrayList<String> postersRefs;
-    public GridView gridview;
+    public String mSortType;
+    public ArrayList<String> mPostersRefs;
+    public GridView mGridView;
 
     public GalleryFragment(){
     }
@@ -67,10 +68,13 @@ public class GalleryFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        mSortType = PreferenceManager
+                .getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
+
         //Fetch data from the internet
         try {
             mResponse = new GalleryContentTask()
-                    .execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
+                    .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -78,16 +82,16 @@ public class GalleryFragment extends Fragment {
 
         //parse response: get all images refs
         try {
-            postersRefs = getPosters(mResponse);
+            mPostersRefs = getPosters(mResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //preparing gallery
-        gridview = (GridView) rootView.findViewById(R.id.gallery_grid);
-        gridview.setAdapter(new ImageAdapter(rootView.getContext()));
+        mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
+        mGridView.setAdapter(new ImageAdapter(rootView.getContext()));
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
@@ -128,7 +132,7 @@ public class GalleryFragment extends Fragment {
         }
 
         public int getCount() {
-            return postersRefs.size();
+            return mPostersRefs.size();
         }
 
         public Object getItem(int position) {
@@ -166,12 +170,12 @@ public class GalleryFragment extends Fragment {
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                gridview.setColumnWidth(imgWidth);
+                mGridView.setColumnWidth(imgWidth);
 
             } else {
                 imageView = (ImageView) convertView;
             }
-            Picasso.with(getActivity()).load(postersRefs.get(position)).into(imageView);
+            Picasso.with(getActivity()).load(mPostersRefs.get(position)).into(imageView);
 
             return imageView;
         }

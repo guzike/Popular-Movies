@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="pref_sortType"
-        android:title="@string/pref_sortType"
-        android:dialogTitle="@string/pref_sortType"
-        android:entries="@array/pref_sortType_entries"
-        android:entryValues="@array/pref_sortType_values"
-        android:defaultValue="@string/pref_sortType_default" />
+        android:key="pref_sort_type"
+        android:title="@string/pref_sort_type"
+        android:dialogTitle="@string/pref_sort_type"
+        android:entries="@array/pref_sort_type_entries"
+        android:entryValues="@array/pref_sort_type_values"
+        android:defaultValue="@string/pref_sort_type_default" />
 
 </PreferenceScreen>

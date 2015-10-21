@@ -3,6 +3,6 @@
     
     <string name="settings">Settings</string>
 
-    <string name="pref_sortType">sort by</string>
-    <string name="pref_sortType_default">popularity</string>
+    <string name="pref_sort_type">SORT TYPE</string>
+    <string name="pref_sort_type_default">popular</string>
 </resources>

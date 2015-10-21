@@ -6,14 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String PREF_SORT_TYPE = "pref_sort_type";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_gallery);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.settings_container, new SettingsFragment())
+                    .add(android.R.id.content, new SettingsFragment())
                     .commit();
         }
 
