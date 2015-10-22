@@ -9,14 +9,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.gallery_container, new GalleryFragment())
+                    .add(android.R.id.content, new GalleryFragment())
                     .commit();
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
 }

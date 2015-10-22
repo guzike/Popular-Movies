@@ -33,7 +33,7 @@ public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
     public final String EXTRA_TITLE = "original_title";
-    public final String EXTRA_POSTER = "poster_path";
+    public final String EXTRA_BACKDROP = "backdrop_path";
     public final String EXTRA_OVERVIEW  = "overview";
     public final String EXTRA_RATING  = "vote_average";
     public final String EXTRA_DATE  = "release_date";
@@ -114,7 +114,7 @@ public class GalleryFragment extends Fragment {
 
                 try {
                     bundle.putStringArrayList(EXTRA_TITLE, getStringInfo(mJsonArray, EXTRA_TITLE));
-                    bundle.putStringArrayList(EXTRA_POSTER, getStringInfo(mJsonArray, EXTRA_POSTER));
+                    bundle.putStringArrayList(EXTRA_BACKDROP, getBackdrops(mJsonArray));
                     bundle.putStringArrayList(EXTRA_OVERVIEW, getStringInfo(mJsonArray, EXTRA_OVERVIEW));
                     bundle.putStringArrayList(EXTRA_RATING, getStringInfo(mJsonArray, EXTRA_RATING));
                     bundle.putStringArrayList(EXTRA_DATE, getStringInfo(mJsonArray, EXTRA_DATE));
@@ -161,7 +161,7 @@ public class GalleryFragment extends Fragment {
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String backdropPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString("backdrop_path");
+            String backdropPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString(EXTRA_BACKDROP);
             backdrops.add(backdropPath);
             Log.d(LOG_TAG, backdropPath);
         }
