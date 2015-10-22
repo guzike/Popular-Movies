@@ -37,6 +37,7 @@ public class GalleryFragment extends Fragment {
     public final String EXTRA_OVERVIEW  = "overview";
     public final String EXTRA_RATING  = "vote_average";
     public final String EXTRA_DATE  = "release_date";
+    public final String EXTRA_POSITION  = "position";
 
     public String mResponse;
     public JSONArray mJsonArray;
@@ -121,6 +122,7 @@ public class GalleryFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                bundle.putInt(EXTRA_POSITION, position);
 
                 intent.putExtras(bundle);
 

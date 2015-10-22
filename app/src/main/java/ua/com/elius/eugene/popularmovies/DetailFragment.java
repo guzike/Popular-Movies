@@ -19,8 +19,10 @@ public class DetailFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        int position = getActivity().getIntent().getExtras().getInt("position");
         TextView title = (TextView)rootView.findViewById(R.id.original_title);
-//        String titleText = getActivity().getIntent().getExtras().getStringArrayList("").get(0);
+        String titleText = getActivity().getIntent().getExtras().getStringArrayList("original_title").get(position);
+        title.setText(titleText);
 
         return rootView;
     }
