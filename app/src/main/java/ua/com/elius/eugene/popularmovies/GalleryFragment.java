@@ -34,6 +34,7 @@ public class GalleryFragment extends Fragment {
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
     public String mResponse;
+    public JSONArray mJsonArray;
     public String mSortType;
     public ArrayList<String> mPostersRefs;
     public GridView mGridView;
@@ -80,9 +81,14 @@ public class GalleryFragment extends Fragment {
             e.printStackTrace();
         }
 
-        //parse response: get all images refs
         try {
-            mPostersRefs = getPosters(mResponse);
+            mJsonArray = getArray(mResponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            mPostersRefs = getPosters(mJsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,8 +103,8 @@ public class GalleryFragment extends Fragment {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
 
-//                Intent intent = new Intent(getActivity(), Intent.class).putExtra(Intent.EXTRA_TEXT, position);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, position);
+                startActivity(intent);
             }
         });
 
@@ -106,12 +112,16 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    public ArrayList<String> getPosters(String string) throws JSONException {
-
-        ArrayList<String> posters = new ArrayList<>();
+    public JSONArray getArray (String string) throws JSONException {
 
         JSONObject jObject = new JSONObject(string);
-        JSONArray jArray = jObject.getJSONArray("results");
+
+        return jObject.getJSONArray("results");
+    }
+
+    public ArrayList<String> getPosters(JSONArray jArray) throws JSONException {
+
+        ArrayList<String> posters = new ArrayList<>();
 
         for (int i=0; i < jArray.length(); i++)
         {
