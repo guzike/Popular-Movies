@@ -32,12 +32,12 @@ import java.util.concurrent.ExecutionException;
 public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
-    public final String EXTRA_TITLE = "original_title";
-    public final String EXTRA_BACKDROP = "backdrop_path";
-    public final String EXTRA_OVERVIEW  = "overview";
-    public final String EXTRA_RATING  = "vote_average";
-    public final String EXTRA_DATE  = "release_date";
-    public final String EXTRA_POSITION  = "position";
+    public final static String EXTRA_TITLE = "original_title";
+    public final static String EXTRA_BACKDROP = "backdrop_path";
+    public final static String EXTRA_OVERVIEW  = "overview";
+    public final static String EXTRA_RATING  = "vote_average";
+    public final static String EXTRA_DATE  = "release_date";
+    public final static String EXTRA_POSITION  = "position";
 
     public String mResponse;
     public JSONArray mJsonArray;
