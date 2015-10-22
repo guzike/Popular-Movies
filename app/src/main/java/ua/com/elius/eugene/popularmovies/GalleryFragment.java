@@ -32,6 +32,11 @@ import java.util.concurrent.ExecutionException;
 public class GalleryFragment extends Fragment {
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
+    public final String EXTRA_TITLE = "original_title";
+    public final String EXTRA_POSTER = "poster_path";
+    public final String EXTRA_OVERVIEW  = "overview";
+    public final String EXTRA_RATING  = "vote_average";
+    public final String EXTRA_DATE  = "release_date";
 
     public String mResponse;
     public JSONArray mJsonArray;
@@ -103,7 +108,22 @@ public class GalleryFragment extends Fragment {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                try {
+                    bundle.putStringArrayList(EXTRA_TITLE, getStringInfo(mJsonArray, EXTRA_TITLE));
+                    bundle.putStringArrayList(EXTRA_POSTER, getStringInfo(mJsonArray, EXTRA_POSTER));
+                    bundle.putStringArrayList(EXTRA_OVERVIEW, getStringInfo(mJsonArray, EXTRA_OVERVIEW));
+                    bundle.putStringArrayList(EXTRA_RATING, getStringInfo(mJsonArray, EXTRA_RATING));
+                    bundle.putStringArrayList(EXTRA_DATE, getStringInfo(mJsonArray, EXTRA_DATE));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -132,6 +152,36 @@ public class GalleryFragment extends Fragment {
         }
 
         return posters;
+    }
+
+    public ArrayList<String> getBackdrops(JSONArray jArray) throws JSONException {
+
+        ArrayList<String> backdrops = new ArrayList<>();
+
+        for (int i=0; i < jArray.length(); i++)
+        {
+            JSONObject oneObject = jArray.getJSONObject(i);
+            String backdropPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString("backdrop_path");
+            backdrops.add(backdropPath);
+            Log.d(LOG_TAG, backdropPath);
+        }
+
+        return backdrops;
+    }
+
+    public ArrayList<String> getStringInfo(JSONArray jArray, String info) throws JSONException {
+
+        ArrayList<String> infos = new ArrayList<>();
+
+        for (int i=0; i < jArray.length(); i++)
+        {
+            String oneObject = jArray.getJSONObject(i).getString(info);
+
+            infos.add(oneObject);
+            Log.d(LOG_TAG, oneObject);
+        }
+
+        return infos;
     }
 
     public class ImageAdapter extends BaseAdapter {
