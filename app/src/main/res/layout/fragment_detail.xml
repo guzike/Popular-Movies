@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/backdrop_path"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="300dp" />
 
     <TextView
         android:id="@+id/original_title"
