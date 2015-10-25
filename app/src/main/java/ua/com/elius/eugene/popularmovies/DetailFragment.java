@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +32,7 @@ public class DetailFragment extends Fragment {
         TextView title = (TextView)rootView.findViewById(R.id.original_title);
         if(extras.containsKey(GalleryFragment.EXTRA_TITLE)) {
             ArrayList<String> titles = extras.getStringArrayList(GalleryFragment.EXTRA_TITLE);
-            if(title != null){
+            if(titles != null){
                 if(titles.size() >= position) {
                     title.setText(titles.get(position));
                 }
@@ -54,7 +53,9 @@ public class DetailFragment extends Fragment {
         }
         imgHeight =(imgWidth * 104) / 185;
         ImageView backdrop = (ImageView)rootView.findViewById(R.id.backdrop_path);
-        backdrop.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
+        backdrop.getLayoutParams().width = imgWidth;
+        backdrop.getLayoutParams().height = imgHeight;
+        backdrop.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         if(extras.containsKey(GalleryFragment.EXTRA_BACKDROP)) {
             ArrayList<String> backdrops = extras.getStringArrayList(GalleryFragment.EXTRA_BACKDROP);

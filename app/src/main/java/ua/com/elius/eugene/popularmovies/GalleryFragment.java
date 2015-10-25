@@ -148,7 +148,7 @@ public class GalleryFragment extends Fragment {
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String posterPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString("poster_path");
+            String posterPath = "http://image.tmdb.org/t/p/w500/" + oneObject.getString("poster_path");
             posters.add(posterPath);
             Log.d(LOG_TAG, posterPath);
         }
@@ -163,7 +163,7 @@ public class GalleryFragment extends Fragment {
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String backdropPath = "http://image.tmdb.org/t/p/w185/" + oneObject.getString(EXTRA_BACKDROP);
+            String backdropPath = "http://image.tmdb.org/t/p/w780/" + oneObject.getString(EXTRA_BACKDROP);
             backdrops.add(backdropPath);
             Log.d(LOG_TAG, backdropPath);
         }
