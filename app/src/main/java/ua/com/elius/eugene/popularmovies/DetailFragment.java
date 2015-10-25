@@ -29,16 +29,6 @@ public class DetailFragment extends Fragment {
 
         Bundle extras = getActivity().getIntent().getExtras();
 
-        TextView title = (TextView)rootView.findViewById(R.id.original_title);
-        if(extras.containsKey(GalleryFragment.EXTRA_TITLE)) {
-            ArrayList<String> titles = extras.getStringArrayList(GalleryFragment.EXTRA_TITLE);
-            if(titles != null){
-                if(titles.size() >= position) {
-                    title.setText(titles.get(position));
-                }
-            }
-        }
-
         int imgWidth;
         int imgHeight;
 
@@ -66,6 +56,23 @@ public class DetailFragment extends Fragment {
             }
         }
 
+        displayText(position, R.id.original_title, GalleryFragment.EXTRA_TITLE, extras, rootView);
+        displayText(position, R.id.overview, GalleryFragment.EXTRA_OVERVIEW, extras, rootView);
+        displayText(position, R.id.vote_average, GalleryFragment.EXTRA_RATING, extras, rootView);
+        displayText(position, R.id.release_date, GalleryFragment.EXTRA_DATE, extras, rootView);
+
         return rootView;
+    }
+
+    public void displayText(int position, int id, String extra, Bundle extras, View view){
+        TextView textView = (TextView)view.findViewById(id);
+        if(extras.containsKey(extra)) {
+            ArrayList<String> texts = extras.getStringArrayList(extra);
+            if(texts != null){
+                if(texts.size() > position) {
+                    textView.setText(texts.get(position));
+                }
+            }
+        }
     }
 }
