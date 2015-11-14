@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -106,8 +105,6 @@ public class GalleryFragment extends Fragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
 
@@ -150,7 +147,6 @@ public class GalleryFragment extends Fragment {
             JSONObject oneObject = jArray.getJSONObject(i);
             String posterPath = "http://image.tmdb.org/t/p/w500/" + oneObject.getString("poster_path");
             posters.add(posterPath);
-            Log.d(LOG_TAG, posterPath);
         }
 
         return posters;
@@ -165,7 +161,6 @@ public class GalleryFragment extends Fragment {
             JSONObject oneObject = jArray.getJSONObject(i);
             String backdropPath = "http://image.tmdb.org/t/p/w780/" + oneObject.getString(EXTRA_BACKDROP);
             backdrops.add(backdropPath);
-            Log.d(LOG_TAG, backdropPath);
         }
 
         return backdrops;
@@ -180,7 +175,6 @@ public class GalleryFragment extends Fragment {
             String oneObject = jArray.getJSONObject(i).getString(info);
 
             infos.add(oneObject);
-            Log.d(LOG_TAG, oneObject);
         }
 
         return infos;
