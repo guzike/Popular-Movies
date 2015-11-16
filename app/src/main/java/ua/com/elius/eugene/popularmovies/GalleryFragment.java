@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -231,10 +230,9 @@ public class GalleryFragment extends Fragment {
             } else {
                 imageView = (ImageView) convertView;
             }
-            Picasso.with(getActivity()).load(mPostersRefs.get(position)).into(imageView);
+            Picasso.with(mContext).load(mPostersRefs.get(position)).into(imageView);
 
             return imageView;
         }
-
     }
 }
