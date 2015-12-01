@@ -6,52 +6,51 @@ import java.util.Date;
 import ckm.simple.sql_provider.annotation.SimpleSQLColumn;
 import ckm.simple.sql_provider.annotation.SimpleSQLTable;
 
-@SimpleSQLTable(table = "test", provider = "TestProvider")
-public class Test {
+@SimpleSQLTable(table = "test_add", provider = "TestProvider")
+public class TestAdd {
 
-    @SimpleSQLColumn("col_str")
+    @SimpleSQLColumn("c_str")
     public String myString;
 
     @SimpleSQLColumn(value = "col_int", primary = true)
     public int anInt;
 
-    @SimpleSQLColumn("col_integer")
+    @SimpleSQLColumn("c_integer")
     public int myinteger;
 
-    @SimpleSQLColumn("col_short")
+    @SimpleSQLColumn("c_short")
     public int myshort;
 
-    @SimpleSQLColumn("col_short2")
+    @SimpleSQLColumn("c_short2")
     public int myShort;
 
-    @SimpleSQLColumn("col_long")
+    @SimpleSQLColumn("c_long")
     public long mylong;
 
-    @SimpleSQLColumn("col_long2")
+    @SimpleSQLColumn("c_long2")
     public int myLong;
 
-    @SimpleSQLColumn("col_double")
+    @SimpleSQLColumn("c_double")
     public long mydouble;
 
-    @SimpleSQLColumn("col_double2")
+    @SimpleSQLColumn("c_double2")
     public int myDouble;
 
-    @SimpleSQLColumn("col_float")
+    @SimpleSQLColumn("c_float")
     public long myfloat;
 
-    @SimpleSQLColumn("col_float2")
+    @SimpleSQLColumn("c_float2")
     public int myFloat;
 
-    @SimpleSQLColumn("col_bigdecimal")
+    @SimpleSQLColumn("c_bigdecimal")
     public BigDecimal bigD;
 
-    @SimpleSQLColumn("col_bool")
+    @SimpleSQLColumn("c_bool")
     public boolean mybool;
 
-    @SimpleSQLColumn("col_bool2")
+    @SimpleSQLColumn("c_bool2")
     public boolean myBool;
 
-    @SimpleSQLColumn("col_date")
+    @SimpleSQLColumn("c_date")
     public Date mydateCol;
-
 }
