@@ -17,8 +17,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        Test testInstance = new Test();
-        getContentResolver().insert(TestTable.CONTENT_URI,TestTable.getContentValues(testInstance,false));
     }
 }
