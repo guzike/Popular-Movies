@@ -21,7 +21,7 @@ public final class NotesProvider {
         @ContentUri(
                 path = Path.LISTS,
                 type = "vnd.android.cursor.dir/list",
-                defaultSort = ListColumns.TITLE + " ASC")
+                defaultSort = MovieColumns.TITLE + " ASC")
         public static final Uri LISTS = Uri.parse("content://" + AUTHORITY + "/lists");
     }
 }

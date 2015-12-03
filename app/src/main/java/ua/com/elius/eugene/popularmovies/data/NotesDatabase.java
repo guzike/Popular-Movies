@@ -8,5 +8,5 @@ public final class NotesDatabase {
 
     public static final int VERSION = 1;
 
-    @Table(ListColumns.class) public static final String LISTS = "lists";
+    @Table(MovieColumns.class) public static final String LISTS = "lists";
 }
