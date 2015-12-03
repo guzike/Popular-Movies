@@ -11,10 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <provider
-            android:authorities="just.some.test_provider.authority"
-            android:name="ua.com.elius.eugene.popularmovies.TestProvider"/>
-
         <activity
             android:name=".MainActivity">
             <intent-filter>

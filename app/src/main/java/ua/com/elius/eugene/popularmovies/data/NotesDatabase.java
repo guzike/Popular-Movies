@@ -1,4 +1,4 @@
-package ua.com.elius.eugene.popularmovies;
+package ua.com.elius.eugene.popularmovies.data;
 
 import net.simonvt.schematic.annotation.Database;
 import net.simonvt.schematic.annotation.Table;

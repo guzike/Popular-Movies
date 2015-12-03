@@ -1,4 +1,4 @@
-package ua.com.elius.eugene.popularmovies;
+package ua.com.elius.eugene.popularmovies.data;
 
 import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
@@ -7,10 +7,10 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 
 public interface ListColumns {
 
-    @DataType(INTEGER) @PrimaryKey
+    @DataType(DataType.Type.INTEGER) @PrimaryKey
     @AutoIncrement
     String _ID = "_id";
 
-    @DataType(TEXT) @NotNull
+    @DataType(DataType.Type.TEXT) @NotNull
     String TITLE = "title";
 }
