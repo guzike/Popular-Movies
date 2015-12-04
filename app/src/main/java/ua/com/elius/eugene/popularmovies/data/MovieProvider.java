@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
+import net.simonvt.schematic.annotation.InexactContentUri;
 import net.simonvt.schematic.annotation.TableEndpoint;
 
 @ContentProvider(authority = MovieProvider.AUTHORITY, database = MovieDatabase.class)
@@ -33,7 +34,55 @@ public final class MovieProvider {
         @ContentUri(
                 path = Path.MOVIES,
                 type = "vnd.android.cursor.dir/movie",
-                defaultSort = MovieColumns._ID + " ASC")
-        public static final Uri MOVIES = Uri.parse("content://" + AUTHORITY + "/lists");
+                defaultSort = MovieColumns.TITLE + " ASC")
+        public static final Uri CONTENT_URI = buildUri(Path.MOVIES);
+
+        @InexactContentUri(
+                name = "MOVIE_ID",
+                path = Path.MOVIES + "/#",
+                type = "vnd.android.cursor.item/movie",
+                whereColumn = MovieColumns._ID,
+                pathSegment = 1)
+        public static Uri withId(long id){
+            return buildUri(Path.MOVIES, String.valueOf(id));
+        }
+    }
+
+    @TableEndpoint(table = MovieDatabase.TRAILERS)
+    public static class Trailers {
+        @ContentUri(
+                path = Path.TRAILERS,
+                type = "vnd.android.cursor.dir/trailer",
+                defaultSort = TrailerColumns.TITLE + " ASC")
+        public static final Uri CONTENT_URI = buildUri(Path.TRAILERS);
+
+        @InexactContentUri(
+                name = "TRAILER_ID",
+                path = Path.TRAILERS + "/#",
+                type = "vnd.android.cursor.item/trailer",
+                whereColumn = TrailerColumns._ID,
+                pathSegment = 1)
+        public static Uri withId(long id){
+            return buildUri(Path.TRAILERS, String.valueOf(id));
+        }
+    }
+
+    @TableEndpoint(table = MovieDatabase.REVIEWS)
+    public static class Reviews {
+        @ContentUri(
+                path = Path.REVIEWS,
+                type = "vnd.android.cursor.dir/review",
+                defaultSort = ReviewColumns.TITLE + " ASC")
+        public static final Uri CONTENT_URI = buildUri(Path.REVIEWS);
+
+        @InexactContentUri(
+                name = "REVIEW_ID",
+                path = Path.REVIEWS + "/#",
+                type = "vnd.android.cursor.item/review",
+                whereColumn = ReviewColumns._ID,
+                pathSegment = 1)
+        public static Uri withId(long id){
+            return buildUri(Path.REVIEWS, String.valueOf(id));
+        }
     }
 }
