@@ -4,6 +4,7 @@ import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
+import net.simonvt.schematic.annotation.Unique;
 
 public interface TrailerColumns {
 
@@ -14,6 +15,11 @@ public interface TrailerColumns {
 
     @DataType(DataType.Type.INTEGER)
     @NotNull
+    String ID_FOR = "id_for";
+
+    @DataType(DataType.Type.INTEGER)
+    @NotNull
+    @Unique
     String ID = "id";
 
     @DataType(DataType.Type.TEXT)

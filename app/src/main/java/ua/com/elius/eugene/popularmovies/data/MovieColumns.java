@@ -4,6 +4,7 @@ import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
+import net.simonvt.schematic.annotation.Unique;
 
 public interface MovieColumns {
 
@@ -18,6 +19,7 @@ public interface MovieColumns {
 
     @DataType(DataType.Type.INTEGER)
     @NotNull
+    @Unique
     String ID = "id";
 
     @DataType(DataType.Type.TEXT)
