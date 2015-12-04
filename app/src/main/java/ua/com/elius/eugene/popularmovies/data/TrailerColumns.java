@@ -7,10 +7,20 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 
 public interface TrailerColumns {
 
-    @DataType(DataType.Type.INTEGER) @PrimaryKey
+    @DataType(DataType.Type.INTEGER)
+    @PrimaryKey
     @AutoIncrement
     String _ID = "_id";
 
-    @DataType(DataType.Type.TEXT) @NotNull
-    String TITLE = "title";
+    @DataType(DataType.Type.INTEGER)
+    @NotNull
+    String ID = "id";
+
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    String KEY = "key";
+
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    String NAME = "name";
 }

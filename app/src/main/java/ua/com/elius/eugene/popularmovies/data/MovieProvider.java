@@ -34,7 +34,7 @@ public final class MovieProvider {
         @ContentUri(
                 path = Path.MOVIES,
                 type = "vnd.android.cursor.dir/movie",
-                defaultSort = MovieColumns.TITLE + " ASC")
+                defaultSort = MovieColumns.ORIGINAL_TITLE + " ASC")
         public static final Uri CONTENT_URI = buildUri(Path.MOVIES);
 
         @InexactContentUri(
@@ -53,7 +53,7 @@ public final class MovieProvider {
         @ContentUri(
                 path = Path.TRAILERS,
                 type = "vnd.android.cursor.dir/trailer",
-                defaultSort = TrailerColumns.TITLE + " ASC")
+                defaultSort = TrailerColumns.NAME + " ASC")
         public static final Uri CONTENT_URI = buildUri(Path.TRAILERS);
 
         @InexactContentUri(
@@ -72,7 +72,7 @@ public final class MovieProvider {
         @ContentUri(
                 path = Path.REVIEWS,
                 type = "vnd.android.cursor.dir/review",
-                defaultSort = ReviewColumns.TITLE + " ASC")
+                defaultSort = ReviewColumns.AUTHOR + " ASC")
         public static final Uri CONTENT_URI = buildUri(Path.REVIEWS);
 
         @InexactContentUri(
