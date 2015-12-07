@@ -89,11 +89,14 @@ public class GalleryFragment extends Fragment {
             mJsonArray = getArray(mResponse);
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return rootView;
         }
 
         try {
             mPostersRefs = getPosters(mJsonArray);
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
 
