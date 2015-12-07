@@ -1,12 +1,12 @@
 package ua.com.elius.eugene.popularmovies;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
 
@@ -89,13 +88,8 @@ public class GalleryFragment extends Fragment {
                 .getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
 
         //Fetch data from the internet
-        try {
-            mResponse = new GalleryContentTask()
-                    .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        new GalleryContentTask(getContext())
+                    .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
 
         try {
             mJsonArray = getArray(mResponse);
@@ -116,6 +110,7 @@ public class GalleryFragment extends Fragment {
         Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
                 null, null, null, null);
         if (c == null || c.getCount() == 0){
+
             return rootView;
         }
 

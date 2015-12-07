@@ -17,7 +17,7 @@ public interface TrailerColumns {
     @NotNull
     String ID_FOR = "id_for";
 
-    @DataType(DataType.Type.INTEGER)
+    @DataType(DataType.Type.TEXT)
     @NotNull
     @Unique
     String ID = "id";
