@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +43,16 @@ public class GalleryFragment extends Fragment {
     public String mResponse;
     public JSONArray mJsonArray;
     public String mSortType;
+
+    public ArrayList<String> mBackdropsRefs;
+    public ArrayList<Integer> mIds;
+    public ArrayList<String> mOriginalTitles;
+    public ArrayList<String> mOverviews;
+    public ArrayList<String> mReleaseDates;
     public ArrayList<String> mPostersRefs;
+    public ArrayList<Double> mPopularity;
+    public ArrayList<Double> mVoteAverages;
+
     public GridView mGridView;
 
     public GalleryFragment(){
@@ -91,27 +99,25 @@ public class GalleryFragment extends Fragment {
 
         try {
             mJsonArray = getArray(mResponse);
+
+            mBackdropsRefs = getBackdrops(mJsonArray);
+            mIds = getInt(mJsonArray, "id");
+            mOriginalTitles = getStringInfo(mJsonArray, "original_title");
+            mOverviews = getStringInfo(mJsonArray, "overview");
+            mReleaseDates = getStringInfo(mJsonArray, "release_date");
+            mPostersRefs = getPosters(mJsonArray);
+            mPopularity = getDouble(mJsonArray, "popularity");
+            mVoteAverages = getDouble(mJsonArray, "vote_average");
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        }
+
+        //Take data from the database
+        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
+                null, null, null, null);
+        if (c == null || c.getCount() == 0){
             return rootView;
         }
-
-        try {
-            mPostersRefs = getPosters(mJsonArray);
-        } catch (JSONException | NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
-        if(c==null){
-            Log.d(LOG_TAG, "cursor is null");
-            }
 
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
@@ -174,7 +180,7 @@ public class GalleryFragment extends Fragment {
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String backdropPath = "http://image.tmdb.org/t/p/w780/" + oneObject.getString(EXTRA_BACKDROP);
+            String backdropPath = "http://image.tmdb.org/t/p/w780/" + oneObject.getString("backdrop_path");
             backdrops.add(backdropPath);
         }
 
@@ -193,6 +199,30 @@ public class GalleryFragment extends Fragment {
         }
 
         return infos;
+    }
+
+    public ArrayList<Integer> getInt(JSONArray jArray, String qInt) throws JSONException {
+
+        ArrayList<Integer> intArray = new ArrayList<>();
+        for (int i=0; i < jArray.length(); i++)
+        {
+            int oneObject = jArray.getJSONObject(i).getInt(qInt);
+
+            intArray.add(oneObject);
+        }
+        return intArray;
+    }
+
+    public ArrayList<Double> getDouble(JSONArray jArray, String qDouble) throws JSONException {
+
+        ArrayList<Double> dArray = new ArrayList<>();
+        for (int i=0; i < jArray.length(); i++)
+        {
+            Double oneObject = jArray.getJSONObject(i).getDouble(qDouble);
+
+            dArray.add(oneObject);
+        }
+        return dArray;
     }
 
     public class ImageAdapter extends BaseAdapter {
