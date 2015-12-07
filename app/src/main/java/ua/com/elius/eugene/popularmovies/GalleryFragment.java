@@ -3,10 +3,12 @@ package ua.com.elius.eugene.popularmovies;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +28,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import ua.com.elius.eugene.popularmovies.data.MovieProvider;
 
 public class GalleryFragment extends Fragment {
 
@@ -99,6 +103,15 @@ public class GalleryFragment extends Fragment {
         } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
+
+        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+        if(c==null){
+            Log.d(LOG_TAG, "cursor is null");
+            }
 
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);

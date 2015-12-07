@@ -31,7 +31,6 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     public ArrayList<String> mPostersRefs;
     public ArrayList<Double> mPopularities;
     public ArrayList<Double> mVoteAverages;
-    public ArrayList<Integer> mFavorites;
 
     @Override
     protected String doInBackground(String... params) {
@@ -68,12 +67,9 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
             mPostersRefs = getPosters(mJsonArray);
             mPopularities = getDouble(mJsonArray, "popularity");
             mVoteAverages = getDouble(mJsonArray, "vote_average");
-            mFavorites = getInt(mJsonArray, "favorite");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
     }
 
@@ -123,7 +119,7 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
         ArrayList<Integer> intArray = new ArrayList<>();
         for (int i=0; i < jArray.length(); i++)
         {
-            Integer oneObject = jArray.getJSONObject(i).getInt(qInt);
+            int oneObject = jArray.getJSONObject(i).getInt(qInt);
 
             intArray.add(oneObject);
         }
