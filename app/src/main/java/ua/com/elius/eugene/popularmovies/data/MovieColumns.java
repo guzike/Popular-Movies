@@ -47,6 +47,5 @@ public interface MovieColumns {
     String VOTE_AVERAGE = "vote_average";
 
     @DataType(DataType.Type.INTEGER)
-    @NotNull
     String FAVORITE = "favorite";
 }

@@ -38,6 +38,11 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <provider
+            android:authorities="ua.com.elius.eugene.popularmovies.data.MovieProvider"
+            android:name="ua.com.elius.eugene.popularmovies.data.generated.MovieProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
