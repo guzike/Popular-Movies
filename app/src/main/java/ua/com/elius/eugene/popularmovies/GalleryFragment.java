@@ -39,18 +39,7 @@ public class GalleryFragment extends Fragment {
     public final static String EXTRA_DATE  = "release_date";
     public final static String EXTRA_POSITION  = "position";
 
-    public String mResponse;
-    public JSONArray mJsonArray;
     public String mSortType;
-
-    public ArrayList<String> mBackdropsRefs;
-    public ArrayList<Integer> mIds;
-    public ArrayList<String> mOriginalTitles;
-    public ArrayList<String> mOverviews;
-    public ArrayList<String> mReleaseDates;
-    public ArrayList<String> mPostersRefs;
-    public ArrayList<Double> mPopularity;
-    public ArrayList<Double> mVoteAverages;
 
     public GridView mGridView;
 
@@ -90,21 +79,6 @@ public class GalleryFragment extends Fragment {
         //Fetch data from the internet
         new GalleryContentTask(getContext())
                     .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
-
-        try {
-            mJsonArray = getArray(mResponse);
-
-            mBackdropsRefs = getBackdrops(mJsonArray);
-            mIds = getInt(mJsonArray, "id");
-            mOriginalTitles = getStringInfo(mJsonArray, "original_title");
-            mOverviews = getStringInfo(mJsonArray, "overview");
-            mReleaseDates = getStringInfo(mJsonArray, "release_date");
-            mPostersRefs = getPosters(mJsonArray);
-            mPopularity = getDouble(mJsonArray, "popularity");
-            mVoteAverages = getDouble(mJsonArray, "vote_average");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         //Take data from the database
         Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
