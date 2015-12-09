@@ -152,26 +152,25 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         //Getting the right data from the database (id and poster_path of the movies)
         String[] projection = new String[] {
+                MovieColumns._ID,
                 MovieColumns.ID,
                 MovieColumns.POSTER_PATH
         };
-        String selection = "limit 20";
+//        String selection;
 //        String[] selectionArgs = new String[] {
 //                "value1",
 //                "value2"
 //        };
 
-        String sortOrder;
+        String sortOrder = "";
         if(mSortType.contains("popular")) {
             sortOrder = MovieColumns.POPULARITY;
         }else if(mSortType.contains("top_rated")){
             sortOrder = MovieColumns.VOTE_AVERAGE;
-        }else{
-            sortOrder = null;
         }
-
+        sortOrder += " limit 20";
         return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
-                projection, selection, null, sortOrder);
+                projection, null, null, sortOrder);
     }
 
     @Override
@@ -261,7 +260,8 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            Picasso.with(mContext).load(mPostersRefs.get(position)).into((ImageView)view);
+            String ref = cursor.getString(1);
+            Picasso.with(mContext).load(ref).into((ImageView) view);
         }
     }
 }
