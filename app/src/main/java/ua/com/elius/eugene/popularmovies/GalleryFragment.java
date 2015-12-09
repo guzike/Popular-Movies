@@ -179,20 +179,8 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
             mCursor = c;
         }
 
-        public int getCount() {
-            return 20;
-        }
-
-        public Object getItem(int position) {
-            return null;
-        }
-
-        public long getItemId(int position) {
-            return 0;
-        }
-
         // create a new ImageView for each item referenced by the Adapter
-
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             int imgWidth;
             int imgHeight;
