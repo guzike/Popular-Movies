@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
 
 public class GalleryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -104,20 +105,41 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         new GalleryContentTask(getContext())
                     .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
 
-        //Take data from the database
+        //Check if the database is empty
         Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
                 null, null, null, null);
         if (c == null || c.getCount() == 0){
-
             return rootView;
         }
+
+        //Getting the right data from the database (id and poster_path of the movies)
+        String[] projection = new String[] {
+                MovieColumns.ID,
+                MovieColumns.POSTER_PATH
+        };
+        String selection = "limit 20";
+//        String[] selectionArgs = new String[] {
+//                "value1",
+//                "value2"
+//        };
+
+        String sortOrder;
+        if(mSortType.contains("popular")) {
+            sortOrder = MovieColumns.POPULARITY;
+        }else if(mSortType.contains("top_rated")){
+            sortOrder = MovieColumns.VOTE_AVERAGE;
+        }else{
+            sortOrder = null;
+        }
+
+        Cursor gridCursor = getActivity()
+                .getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
+                        projection, selection, null, sortOrder);
 
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
 
-        mGalleryAdapter = new ImageAdapter(rootView.getContext(), getActivity()
-                .getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
-                null, null, null, null), 0);
+        mGalleryAdapter = new ImageAdapter(rootView.getContext(), gridCursor, 0);
 
         mGridView.setAdapter(mGalleryAdapter);
 
@@ -223,7 +245,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-
         }
     }
 }
