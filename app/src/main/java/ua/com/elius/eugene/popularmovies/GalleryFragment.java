@@ -112,34 +112,10 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
             return rootView;
         }
 
-        //Getting the right data from the database (id and poster_path of the movies)
-        String[] projection = new String[] {
-                MovieColumns.ID,
-                MovieColumns.POSTER_PATH
-        };
-        String selection = "limit 20";
-//        String[] selectionArgs = new String[] {
-//                "value1",
-//                "value2"
-//        };
-
-        String sortOrder;
-        if(mSortType.contains("popular")) {
-            sortOrder = MovieColumns.POPULARITY;
-        }else if(mSortType.contains("top_rated")){
-            sortOrder = MovieColumns.VOTE_AVERAGE;
-        }else{
-            sortOrder = null;
-        }
-
-        Cursor gridCursor = getActivity()
-                .getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
-                        projection, selection, null, sortOrder);
-
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
 
-        mGalleryAdapter = new ImageAdapter(rootView.getContext(), gridCursor, 0);
+        mGalleryAdapter = new ImageAdapter(rootView.getContext(), null, 0);
 
         mGridView.setAdapter(mGalleryAdapter);
 
@@ -174,11 +150,28 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //Getting the right data from the database (id and poster_path of the movies)
+        String[] projection = new String[] {
+                MovieColumns.ID,
+                MovieColumns.POSTER_PATH
+        };
+        String selection = "limit 20";
+//        String[] selectionArgs = new String[] {
+//                "value1",
+//                "value2"
+//        };
+
+        String sortOrder;
+        if(mSortType.contains("popular")) {
+            sortOrder = MovieColumns.POPULARITY;
+        }else if(mSortType.contains("top_rated")){
+            sortOrder = MovieColumns.VOTE_AVERAGE;
+        }else{
+            sortOrder = null;
+        }
+
         return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+                projection, selection, null, sortOrder);
     }
 
     @Override
@@ -201,9 +194,45 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
             mCursor = c;
         }
 
-        // create a new ImageView for each item referenced by the Adapter
+//        // create a new ImageView for each item referenced by the Adapter
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            int imgWidth;
+//            int imgHeight;
+//
+//            DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+//
+//            int pxWidth = displayMetrics.widthPixels;
+//
+//            if (mContext.getResources().getConfiguration().orientation == 1) {
+//                imgWidth = pxWidth / 2;
+//            }else {
+//                imgWidth = pxWidth / 4;
+//            }
+//
+//            imgHeight =(imgWidth * 278) / 185;
+//
+//            ImageView imageView;
+//            if (convertView == null) {
+//                // if it's not recycled, initialize some attributes
+//                imageView = new ImageView(mContext);
+//
+//                imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
+//
+//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//
+//                mGridView.setColumnWidth(imgWidth);
+//
+//            } else {
+//                imageView = (ImageView) convertView;
+//            }
+//            Picasso.with(mContext).load(mPostersRefs.get(position)).into(imageView);
+//
+//            return imageView;
+//        }
+
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
             int imgWidth;
             int imgHeight;
 
@@ -219,32 +248,20 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
             imgHeight =(imgWidth * 278) / 185;
 
-            ImageView imageView;
-            if (convertView == null) {
-                // if it's not recycled, initialize some attributes
-                imageView = new ImageView(mContext);
+            mGridView.setColumnWidth(imgWidth);
 
-                imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
+            ImageView imageView = new ImageView(mContext);
 
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
 
-                mGridView.setColumnWidth(imgWidth);
-
-            } else {
-                imageView = (ImageView) convertView;
-            }
-            Picasso.with(mContext).load(mPostersRefs.get(position)).into(imageView);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             return imageView;
         }
 
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return null;
-        }
-
-        @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            Picasso.with(mContext).load(mPostersRefs.get(position)).into((ImageView)view);
         }
     }
 }
