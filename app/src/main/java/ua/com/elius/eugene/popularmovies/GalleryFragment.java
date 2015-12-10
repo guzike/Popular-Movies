@@ -34,6 +34,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public final static String EXTRA_RATING  = "vote_average";
     public final static String EXTRA_DATE  = "release_date";
     public final static String EXTRA_POSITION  = "position";
+    public final static String EXTRA_ID  = "id";
 
     public String mSortType;
 
@@ -122,20 +123,11 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
 
-//                Bundle bundle = new Bundle();
+                Bundle bundle = new Bundle();
 
-//                try {
-//                    bundle.putStringArrayList(EXTRA_TITLE, getStringInfo(mJsonArray, EXTRA_TITLE));
-//                    bundle.putStringArrayList(EXTRA_BACKDROP, getBackdrops(mJsonArray));
-//                    bundle.putStringArrayList(EXTRA_OVERVIEW, getStringInfo(mJsonArray, EXTRA_OVERVIEW));
-//                    bundle.putStringArrayList(EXTRA_RATING, getStringInfo(mJsonArray, EXTRA_RATING));
-//                    bundle.putStringArrayList(EXTRA_DATE, getStringInfo(mJsonArray, EXTRA_DATE));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                bundle.putInt(EXTRA_POSITION, position);
-//
-//                intent.putExtras(bundle);
+                bundle.putInt(EXTRA_ID, (Integer)v.getTag());
+
+                intent.putExtras(bundle);
 
                 startActivity(intent);
             }

@@ -41,8 +41,11 @@ public class ImageAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        int index = cursor.getColumnIndex(MovieColumns.POSTER_PATH);
-        Picasso.with(mContext).load(cursor.getString(index))
+        int posterIndex = cursor.getColumnIndex(MovieColumns.POSTER_PATH);
+        int idIndex = cursor.getColumnIndex(MovieColumns.ID);
+
+        view.setTag(cursor.getInt(idIndex));
+        Picasso.with(mContext).load(cursor.getString(posterIndex))
                 .into((ImageView) view);
     }
 }
