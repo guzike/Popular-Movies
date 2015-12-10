@@ -9,7 +9,7 @@ public class DetailActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(android.R.id.content, new DetailFragment())
                     .commit();
         }

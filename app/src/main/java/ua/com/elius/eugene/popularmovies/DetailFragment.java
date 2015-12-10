@@ -1,6 +1,6 @@
 package ua.com.elius.eugene.popularmovies;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +20,27 @@ import ua.com.elius.eugene.popularmovies.data.MovieProvider;
 
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int CURSOR_LOADER_ID_0 = 0;
+    private static final int CURSOR_LOADER_ID_1 = 1;
+    private static final int CURSOR_LOADER_ID_2 = 2;
+
     public DetailFragment(){
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_0, null, this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_1, null, this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_2, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_0, null, this);
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_1, null, this);
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_2, null, this);
     }
 
     @Nullable
@@ -80,13 +100,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return  new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
-                null, null, null, null);
+        if(id == 0) {
+            return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
+                    null, null, null, null);
+        }else if(id == 1) {
+            return new CursorLoader(getActivity(), MovieProvider.Trailers.CONTENT_URI,
+                    null, null, null, null);
+        }else if(id == 2) {
+            return new CursorLoader(getActivity(), MovieProvider.Reviews.CONTENT_URI,
+                    null, null, null, null);
+        }
+        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        int loaderId = loader.getId();
     }
 
     @Override
