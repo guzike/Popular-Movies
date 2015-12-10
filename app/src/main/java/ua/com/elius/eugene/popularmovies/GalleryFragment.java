@@ -86,8 +86,13 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
                 .getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
 
         //Fetch data from the internet
-        new GalleryContentTask(getContext())
-                    .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
+        if (mSortType.contains("popular") || mSortType.contains("top_rated")) {
+            new GalleryContentTask(getContext())
+                    .execute("https://api.themoviedb.org/3/movie/"
+                            + mSortType
+                            + "?api_key="
+                            + BuildConfig.THE_MOVIE_DB_API_KEY);
+        }
 
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
@@ -141,28 +146,30 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         //Getting the right data from the database (id and poster_path of the movies)
         String[] projection = new String[] {
                 MovieColumns._ID,
                 MovieColumns.ID,
                 MovieColumns.POSTER_PATH
         };
-//        String selection;
-//        String[] selectionArgs = new String[] {
-//                "value1",
-//                "value2"
-//        };
+
+        String selection = null;
+        if(mSortType.contains("favorite")){
+            selection = MovieColumns.FAVORITE + " > 0";
+        }
 
         String sortOrder = "";
         if(mSortType.contains("popular")) {
             sortOrder = MovieColumns.POPULARITY;
+            sortOrder += " desc limit 20";
         }else if(mSortType.contains("top_rated")){
             sortOrder = MovieColumns.VOTE_AVERAGE;
+            sortOrder += " desc limit 20";
         }
-       sortOrder += " desc limit 20";
 
         return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
-                projection, null, null, sortOrder);
+                projection, selection, null, sortOrder);
     }
 
     @Override
