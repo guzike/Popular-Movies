@@ -1,6 +1,5 @@
 package ua.com.elius.eugene.popularmovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
@@ -43,15 +36,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public final static String EXTRA_POSITION  = "position";
 
     public String mSortType;
-
-    public ArrayList<String> mBackdropsRefs;
-    public ArrayList<Integer> mIds;
-    public ArrayList<String> mOriginalTitles;
-    public ArrayList<String> mOverviews;
-    public ArrayList<String> mReleaseDates;
-    public ArrayList<String> mPostersRefs;
-    public ArrayList<Double> mPopularity;
-    public ArrayList<Double> mVoteAverages;
 
     public GridView mGridView;
     public ImageAdapter mGalleryAdapter;
@@ -105,17 +89,25 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         new GalleryContentTask(getContext())
                     .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
 
-        //Check if the database is empty
-//        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
-//                null, null, null, null);
-//        if (c == null || c.getCount() == 0){
-//            return rootView;
-//        }
-
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
 
-        mGalleryAdapter = new ImageAdapter(rootView.getContext(), null, 0);
+        //Counting width and height of the GridView images
+        int imgWidth;
+        int imgHeight;
+
+        DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
+        int pxWidth = displayMetrics.widthPixels;
+        if (rootView.getResources().getConfiguration().orientation == 1) {
+            imgWidth = pxWidth / 2;
+        }else {
+            imgWidth = pxWidth / 4;
+        }
+        imgHeight =(imgWidth * 278) / 185;
+
+        mGridView.setColumnWidth(imgWidth);
+
+        mGalleryAdapter = new ImageAdapter(rootView.getContext(), null, 0, imgWidth, imgHeight);
 
         mGridView.setAdapter(mGalleryAdapter);
 
@@ -145,7 +137,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         });
 
         return rootView;
-
     }
 
     @Override
@@ -182,88 +173,5 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mGalleryAdapter.swapCursor(null);
-    }
-
-    public class ImageAdapter extends CursorAdapter {
-        public Context mContext;
-        public Cursor mCursor;
-
-        public ImageAdapter(Context context, Cursor c,  int flags) {
-            super(context, c,  flags);
-            mContext = context;
-            mCursor = c;
-        }
-
-//        // create a new ImageView for each item referenced by the Adapter
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            int imgWidth;
-//            int imgHeight;
-//
-//            DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-//
-//            int pxWidth = displayMetrics.widthPixels;
-//
-//            if (mContext.getResources().getConfiguration().orientation == 1) {
-//                imgWidth = pxWidth / 2;
-//            }else {
-//                imgWidth = pxWidth / 4;
-//            }
-//
-//            imgHeight =(imgWidth * 278) / 185;
-//
-//            ImageView imageView;
-//            if (convertView == null) {
-//                // if it's not recycled, initialize some attributes
-//                imageView = new ImageView(mContext);
-//
-//                imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
-//
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//
-//                mGridView.setColumnWidth(imgWidth);
-//
-//            } else {
-//                imageView = (ImageView) convertView;
-//            }
-//            Picasso.with(mContext).load(mPostersRefs.get(position)).into(imageView);
-//
-//            return imageView;
-//        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            int imgWidth;
-            int imgHeight;
-
-            DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-
-            int pxWidth = displayMetrics.widthPixels;
-
-            if (mContext.getResources().getConfiguration().orientation == 1) {
-                imgWidth = pxWidth / 2;
-            }else {
-                imgWidth = pxWidth / 4;
-            }
-
-            imgHeight =(imgWidth * 278) / 185;
-
-            mGridView.setColumnWidth(imgWidth);
-
-            ImageView imageView = new ImageView(mContext);
-
-            imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgHeight));
-
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-            return imageView;
-        }
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            int index = cursor.getColumnIndex(MovieColumns.POSTER_PATH);
-            Picasso.with(mContext).load(cursor.getString(index))
-                    .into((ImageView) view);
-        }
     }
 }
