@@ -106,11 +106,11 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
                     .execute("https://api.themoviedb.org/3/movie/" + mSortType + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY);
 
         //Check if the database is empty
-        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
-                null, null, null, null);
-        if (c == null || c.getCount() == 0){
-            return rootView;
-        }
+//        Cursor c = getActivity().getContentResolver().query(MovieProvider.Movies.CONTENT_URI,
+//                null, null, null, null);
+//        if (c == null || c.getCount() == 0){
+//            return rootView;
+//        }
 
         //preparing gallery
         mGridView = (GridView) rootView.findViewById(R.id.gallery_grid);
@@ -168,7 +168,8 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         }else if(mSortType.contains("top_rated")){
             sortOrder = MovieColumns.VOTE_AVERAGE;
         }
-        sortOrder += " limit 20";
+       sortOrder += " desc limit 20";
+
         return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
                 projection, null, null, sortOrder);
     }
@@ -260,8 +261,9 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            String ref = cursor.getString(1);
-            Picasso.with(mContext).load(ref).into((ImageView) view);
+            int index = cursor.getColumnIndex(MovieColumns.POSTER_PATH);
+            Picasso.with(mContext).load(cursor.getString(index))
+                    .into((ImageView) view);
         }
     }
 }
