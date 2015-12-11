@@ -57,6 +57,21 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        String currentSortType = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getString(SettingsActivity.PREF_SORT_TYPE,
+                        getString(R.string.pref_sort_type_default));
+
+        if (!currentSortType.equals(mSortType)) {
+            mSortType = currentSortType;
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
