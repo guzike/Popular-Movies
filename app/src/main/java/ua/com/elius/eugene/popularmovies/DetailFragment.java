@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +25,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID_1 = 1;
     private static final int CURSOR_LOADER_ID_2 = 2;
 
-    int mMovieId;
+    private int mMovieId;
 
     public DetailFragment(){
     }
@@ -107,17 +108,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int loaderId = loader.getId();
+        data.moveToFirst();
 
         if(loaderId == CURSOR_LOADER_ID_0) {
-
-            ImageView backdrop = (ImageView)getActivity().findViewById(R.id.backdrop_path);
+            ImageView backdropView = (ImageView)getActivity().findViewById(R.id.backdrop_path);
+            TextView originalTitleView = (TextView)getActivity().findViewById(R.id.original_title);
+            TextView overviewView = (TextView)getActivity().findViewById(R.id.overview);
+            TextView ratingView = (TextView)getActivity().findViewById(R.id.vote_average);
+            TextView releaseDateView = (TextView)getActivity().findViewById(R.id.release_date);
 
             int backdropIndex = data.getColumnIndex(MovieColumns.BACKDROP_PATH);
+            int originalTitleIndex = data.getColumnIndex(MovieColumns.ORIGINAL_TITLE);
+            int overviewIndex = data.getColumnIndex(MovieColumns.OVERVIEW);
+            int ratingIndex = data.getColumnIndex(MovieColumns.VOTE_AVERAGE);
+            int releaseDateIndex = data.getColumnIndex(MovieColumns.RELEASE_DATE);
 
             String backdropPath = data.getString(backdropIndex);
+            String originalTitle = data.getString(originalTitleIndex);
+            String overview = data.getString(overviewIndex);
+            String rating = data.getString(ratingIndex);
+            String releaseDate = data.getString(releaseDateIndex);
 
-            Picasso.with(getActivity()).load(backdropPath)
-                    .into(backdrop);
+            Picasso.with(getActivity()).load(backdropPath).into(backdropView);
+            originalTitleView.setText(originalTitle);
+            overviewView.setText(overview);
+            ratingView.setText(rating);
+            releaseDateView.setText(releaseDate);
         }
     }
 
