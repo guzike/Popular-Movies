@@ -97,9 +97,7 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
                 mContext.getContentResolver()
                         .update(MovieProvider.Movies.CONTENT_URI, cv, MovieColumns.ID + "=?", new String[]{mIds.get(i).toString()});
             }
-
         }
-
     }
 
     public JSONArray getArray (String string) throws JSONException {

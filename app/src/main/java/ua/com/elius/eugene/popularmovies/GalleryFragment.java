@@ -28,12 +28,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final int CURSOR_LOADER_ID = 0;
 
-    public final static String EXTRA_TITLE = "original_title";
-    public final static String EXTRA_BACKDROP = "backdrop_path";
-    public final static String EXTRA_OVERVIEW  = "overview";
-    public final static String EXTRA_RATING  = "vote_average";
-    public final static String EXTRA_DATE  = "release_date";
-    public final static String EXTRA_POSITION  = "position";
     public final static String EXTRA_ID  = "id";
 
     public String mSortType;
