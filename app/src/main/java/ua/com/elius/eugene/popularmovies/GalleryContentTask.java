@@ -64,42 +64,42 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
-        try {
-            mJsonArray = getArray(s);
-            mBackdropsRefs = getBackdrops(mJsonArray);
-            mIds = getInt(mJsonArray, "id");
-            mOriginalTitles = getStringInfo(mJsonArray, "original_title");
-            mOverviews = getStringInfo(mJsonArray, "overview");
-            mReleaseDates = getStringInfo(mJsonArray, "release_date");
-            mPostersRefs = getPosters(mJsonArray);
-            mPopularity = getDouble(mJsonArray, "popularity");
-            mVoteAverages = getDouble(mJsonArray, "vote_average");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        for(int i = 0; i<mJsonArray.length(); i++){
-
-            ContentValues cv = new ContentValues();
-            cv.put(MovieColumns.BACKDROP_PATH, mBackdropsRefs.get(i));
-            cv.put(MovieColumns.ID, mIds.get(i));
-            cv.put(MovieColumns.ORIGINAL_TITLE, mOriginalTitles.get(i));
-            cv.put(MovieColumns.OVERVIEW, mOverviews.get(i));
-            cv.put(MovieColumns.RELEASE_DATE, mReleaseDates.get(i));
-            cv.put(MovieColumns.POSTER_PATH, mPostersRefs.get(i));
-            cv.put(MovieColumns.POPULARITY, mPopularity.get(i));
-            cv.put(MovieColumns.VOTE_AVERAGE, mVoteAverages.get(i));
-
+        if (s != null) {
             try {
-                mContext.getContentResolver().insert(MovieProvider.Movies.CONTENT_URI, cv);
-            }catch(SQLiteConstraintException e){
-                mContext.getContentResolver()
-                        .update(MovieProvider.Movies.CONTENT_URI, cv, MovieColumns.ID + "=?", new String[]{mIds.get(i).toString()});
+                mJsonArray = getArray(s);
+                mBackdropsRefs = getBackdrops(mJsonArray);
+                mIds = getInt(mJsonArray, "id");
+                mOriginalTitles = getStringInfo(mJsonArray, "original_title");
+                mOverviews = getStringInfo(mJsonArray, "overview");
+                mReleaseDates = getStringInfo(mJsonArray, "release_date");
+                mPostersRefs = getPosters(mJsonArray);
+                mPopularity = getDouble(mJsonArray, "popularity");
+                mVoteAverages = getDouble(mJsonArray, "vote_average");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < mJsonArray.length(); i++) {
+
+                ContentValues cv = new ContentValues();
+                cv.put(MovieColumns.BACKDROP_PATH, mBackdropsRefs.get(i));
+                cv.put(MovieColumns.ID, mIds.get(i));
+                cv.put(MovieColumns.ORIGINAL_TITLE, mOriginalTitles.get(i));
+                cv.put(MovieColumns.OVERVIEW, mOverviews.get(i));
+                cv.put(MovieColumns.RELEASE_DATE, mReleaseDates.get(i));
+                cv.put(MovieColumns.POSTER_PATH, mPostersRefs.get(i));
+                cv.put(MovieColumns.POPULARITY, mPopularity.get(i));
+                cv.put(MovieColumns.VOTE_AVERAGE, mVoteAverages.get(i));
+
+                try {
+                    mContext.getContentResolver().insert(MovieProvider.Movies.CONTENT_URI, cv);
+                } catch (SQLiteConstraintException e) {
+                    mContext.getContentResolver()
+                            .update(MovieProvider.Movies.CONTENT_URI, cv, MovieColumns.ID + "=?", new String[]{mIds.get(i).toString()});
+                }
             }
         }
     }
-
     public JSONArray getArray (String string) throws JSONException {
 
         JSONObject jObject = new JSONObject(string);
