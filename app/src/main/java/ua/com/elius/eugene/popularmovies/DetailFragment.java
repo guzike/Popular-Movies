@@ -1,9 +1,9 @@
 package ua.com.elius.eugene.popularmovies;
 
-import android.support.v4.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
 
+import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
 
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -23,6 +23,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID_0 = 0;
     private static final int CURSOR_LOADER_ID_1 = 1;
     private static final int CURSOR_LOADER_ID_2 = 2;
+
+    int mMovieId;
 
     public DetailFragment(){
     }
@@ -49,7 +51,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        int movieId = getActivity().getIntent().getExtras().getInt("id");
+        mMovieId = getActivity().getIntent().getExtras().getInt("id");
 
         int imgWidth;
         int imgHeight;
@@ -69,40 +71,27 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         backdrop.getLayoutParams().height = imgHeight;
         backdrop.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-//        if(extras.containsKey(GalleryFragment.EXTRA_BACKDROP)) {
-//            ArrayList<String> backdrops = extras.getStringArrayList(GalleryFragment.EXTRA_BACKDROP);
-//            if(backdrops != null){
-//                if(backdrops.size() >= position) {
-//                    Picasso.with(getActivity()).load(backdrops.get(position)).into(backdrop);
-//                }
-//            }
-//        }
-//
-//        displayText(position, R.id.original_title, GalleryFragment.EXTRA_TITLE, extras, rootView);
-//        displayText(position, R.id.overview, GalleryFragment.EXTRA_OVERVIEW, extras, rootView);
-//        displayText(position, R.id.vote_average, GalleryFragment.EXTRA_RATING, extras, rootView);
-//        displayText(position, R.id.release_date, GalleryFragment.EXTRA_DATE, extras, rootView);
-
         return rootView;
-    }
-
-    public void displayText(int position, int id, String extra, Bundle extras, View view){
-        TextView textView = (TextView)view.findViewById(id);
-        if(extras.containsKey(extra)) {
-            ArrayList<String> texts = extras.getStringArrayList(extra);
-            if(texts != null){
-                if(texts.size() > position) {
-                    textView.setText(texts.get(position));
-                }
-            }
-        }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if(id == 0) {
+            //Getting the right data from the database (id and poster_path of the movies)
+            String[] projection = new String[] {
+                    MovieColumns._ID,
+                    MovieColumns.ID,
+                    MovieColumns.BACKDROP_PATH,
+                    MovieColumns.ORIGINAL_TITLE,
+                    MovieColumns.OVERVIEW,
+                    MovieColumns.VOTE_AVERAGE,
+                    MovieColumns.RELEASE_DATE
+            };
+
+            String selection = MovieColumns.ID + " == " + mMovieId;
+
             return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
-                    null, null, null, null);
+                    projection, selection, null, null);
         }else if(id == 1) {
             return new CursorLoader(getActivity(), MovieProvider.Trailers.CONTENT_URI,
                     null, null, null, null);
@@ -116,6 +105,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int loaderId = loader.getId();
+
+        if(loaderId == 0) {
+            int backdropIndex = data.getColumnIndex(MovieColumns.BACKDROP_PATH);
+
+            ImageView backdrop = (ImageView)getActivity().findViewById(R.id.backdrop_path);
+
+            String backdropPath = data.getString(1);
+
+            Picasso.with(getActivity()).load(backdropPath)
+                    .into(backdrop);
+        }
     }
 
     @Override
