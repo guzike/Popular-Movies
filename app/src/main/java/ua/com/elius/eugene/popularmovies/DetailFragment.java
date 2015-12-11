@@ -76,7 +76,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(id == 0) {
+        if(id == CURSOR_LOADER_ID_0) {
             //Getting the right data from the database (id and poster_path of the movies)
             String[] projection = new String[] {
                     MovieColumns._ID,
@@ -88,14 +88,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     MovieColumns.RELEASE_DATE
             };
 
-            String selection = MovieColumns.ID + " == " + mMovieId;
+            String selection = MovieColumns.ID + " = " + mMovieId;
 
             return new CursorLoader(getActivity(), MovieProvider.Movies.CONTENT_URI,
                     projection, selection, null, null);
-        }else if(id == 1) {
+
+        }else if(id == CURSOR_LOADER_ID_1) {
             return new CursorLoader(getActivity(), MovieProvider.Trailers.CONTENT_URI,
                     null, null, null, null);
-        }else if(id == 2) {
+
+        }else if(id == CURSOR_LOADER_ID_2) {
             return new CursorLoader(getActivity(), MovieProvider.Reviews.CONTENT_URI,
                     null, null, null, null);
         }
@@ -106,12 +108,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int loaderId = loader.getId();
 
-        if(loaderId == 0) {
-            int backdropIndex = data.getColumnIndex(MovieColumns.BACKDROP_PATH);
+        if(loaderId == CURSOR_LOADER_ID_0) {
 
             ImageView backdrop = (ImageView)getActivity().findViewById(R.id.backdrop_path);
 
-            String backdropPath = data.getString(1);
+            int backdropIndex = data.getColumnIndex(MovieColumns.BACKDROP_PATH);
+
+            String backdropPath = data.getString(backdropIndex);
 
             Picasso.with(getActivity()).load(backdropPath)
                     .into(backdrop);
