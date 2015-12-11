@@ -38,22 +38,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public DetailFragment(){
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(CURSOR_LOADER_ID_0, null, this);
-        getLoaderManager().initLoader(CURSOR_LOADER_ID_1, null, this);
-        getLoaderManager().initLoader(CURSOR_LOADER_ID_2, null, this);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getLoaderManager().restartLoader(CURSOR_LOADER_ID_0, null, this);
-        getLoaderManager().restartLoader(CURSOR_LOADER_ID_1, null, this);
-        getLoaderManager().restartLoader(CURSOR_LOADER_ID_2, null, this);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,8 +76,23 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 new FavoriteTask(getContext()).execute((Integer) v.getTag(), mMovieId);
             }
         });
-
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_0, null, this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_1, null, this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID_2, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_0, null, this);
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_1, null, this);
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID_2, null, this);
     }
 
     @Override
@@ -133,7 +132,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         data.moveToFirst();
 
         if(loaderId == CURSOR_LOADER_ID_0) {
-
             int backdropIndex = data.getColumnIndex(MovieColumns.BACKDROP_PATH);
             int originalTitleIndex = data.getColumnIndex(MovieColumns.ORIGINAL_TITLE);
             int overviewIndex = data.getColumnIndex(MovieColumns.OVERVIEW);

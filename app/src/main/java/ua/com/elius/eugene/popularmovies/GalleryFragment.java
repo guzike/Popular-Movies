@@ -44,48 +44,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        String currentSortType = PreferenceManager
-                .getDefaultSharedPreferences(getActivity())
-                .getString(SettingsActivity.PREF_SORT_TYPE,
-                        getString(R.string.pref_sort_type_default));
-
-        if (!currentSortType.equals(mSortType)) {
-            mSortType = currentSortType;
-            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.gallery_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings){
-            startActivity(new Intent(getActivity(), SettingsActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,6 +101,48 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        String currentSortType = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getString(SettingsActivity.PREF_SORT_TYPE,
+                        getString(R.string.pref_sort_type_default));
+
+        if (!currentSortType.equals(mSortType)) {
+            mSortType = currentSortType;
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.gallery_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings){
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
