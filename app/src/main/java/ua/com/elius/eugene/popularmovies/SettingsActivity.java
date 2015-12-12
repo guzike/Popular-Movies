@@ -17,7 +17,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(android.R.id.content, new SettingsFragment())
                     .commit();
         }
-
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 }
