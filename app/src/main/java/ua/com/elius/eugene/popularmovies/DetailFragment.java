@@ -40,7 +40,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -51,7 +52,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mReleaseDateView = (TextView)rootView.findViewById(R.id.release_date);
         mFavoriteButton = (Button)rootView.findViewById(R.id.favorite_button);
 
-        mMovieId = getActivity().getIntent().getExtras().getInt("id");
+        mMovieId = getActivity().getIntent().getExtras().getInt(GalleryFragment.EXTRA_ID);
+
+        new GalleryContentTask(getContext(), 1)
+                .execute("https://api.themoviedb.org/3/movie/"
+                        + mMovieId
+                        + "/videos"
+                        + "?api_key="
+                        + BuildConfig.THE_MOVIE_DB_API_KEY);
+
+        new GalleryContentTask(getContext(), 2)
+                .execute("https://api.themoviedb.org/3/movie/"
+                        + mMovieId
+                        + "/reviews"
+                        + "?api_key="
+                        + BuildConfig.THE_MOVIE_DB_API_KEY);
 
         int imgWidth;
         int imgHeight;

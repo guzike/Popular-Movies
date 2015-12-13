@@ -28,7 +28,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final int CURSOR_LOADER_ID = 0;
 
-    public final static String EXTRA_ID  = "id";
+    public static final String EXTRA_ID  = "id";
 
     public String mSortType;
 
@@ -46,16 +46,18 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
 
         mSortType = PreferenceManager
-                .getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
+                .getDefaultSharedPreferences(getActivity())
+                .getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
 
         //Fetch data from the internet
         if (mSortType.contains("popular") || mSortType.contains("top_rated")) {
-            new GalleryContentTask(getContext())
+            new GalleryContentTask(getContext(), 0)
                     .execute("https://api.themoviedb.org/3/movie/"
                             + mSortType
                             + "?api_key="

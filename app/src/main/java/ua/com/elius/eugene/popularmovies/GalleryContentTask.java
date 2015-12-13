@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
+import ua.com.elius.eugene.popularmovies.data.ReviewColumns;
+import ua.com.elius.eugene.popularmovies.data.TrailerColumns;
 
 /**
  * Fetch data from the server and parse it.
@@ -28,6 +30,7 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     public static String LOG_TAG = GalleryContentTask.class.getSimpleName();
 
     Context mContext;
+    int mTask;
 
     public JSONArray mJsonArray;
 
@@ -40,9 +43,21 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     public ArrayList<Double> mPopularity;
     public ArrayList<Double> mVoteAverages;
 
-    GalleryContentTask(Context context){
+    public int mIdFor;
+
+    public ArrayList<String> mTrailerId;
+    public ArrayList<String> mKey;
+    public ArrayList<String> mName;
+
+    public ArrayList<String> mReviewId;
+    public ArrayList<String> mAuthor;
+    public ArrayList<String> mContent;
+
+
+    GalleryContentTask(Context context, int task){
         super();
         mContext = context;
+        mTask = task;
     }
 
     @Override
@@ -64,7 +79,7 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if (s != null) {
+        if (s != null && mTask == 0) {
             try {
                 mJsonArray = getArray(s);
                 mBackdropsRefs = getBackdrops(mJsonArray);
@@ -95,7 +110,66 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
                     mContext.getContentResolver().insert(MovieProvider.Movies.CONTENT_URI, cv);
                 } catch (SQLiteConstraintException e) {
                     mContext.getContentResolver()
-                            .update(MovieProvider.Movies.CONTENT_URI, cv, MovieColumns.ID + "=?", new String[]{mIds.get(i).toString()});
+                            .update(MovieProvider.Movies.CONTENT_URI, cv, MovieColumns.ID + "=?",
+                                    new String[]{mIds.get(i).toString()});
+                }
+            }
+        }
+
+        if (s != null && mTask == 1) {
+            try {
+                mJsonArray = getArray(s);
+                mIdFor = getIdFor(s);
+                mTrailerId = getStringInfo(mJsonArray, "id");
+                mKey = getStringInfo(mJsonArray, "key");
+                mName = getStringInfo(mJsonArray, "name");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < mJsonArray.length(); i++) {
+
+                ContentValues cv = new ContentValues();
+                cv.put(TrailerColumns.ID_FOR, mIdFor);
+                cv.put(TrailerColumns.ID, mTrailerId.get(i));
+                cv.put(TrailerColumns.KEY, mKey.get(i));
+                cv.put(TrailerColumns.NAME, mName.get(i));
+
+                try {
+                    mContext.getContentResolver().insert(MovieProvider.Trailers.CONTENT_URI, cv);
+                } catch (SQLiteConstraintException e) {
+                    mContext.getContentResolver()
+                            .update(MovieProvider.Trailers.CONTENT_URI, cv, TrailerColumns.ID + "=?",
+                                    new String[]{mTrailerId.get(i)});
+                }
+            }
+        }
+
+        if (s != null && mTask == 2) {
+            try {
+                mJsonArray = getArray(s);
+                mIdFor = getIdFor(s);
+                mReviewId = getStringInfo(mJsonArray, "id");
+                mAuthor = getStringInfo(mJsonArray, "author");
+                mContent = getStringInfo(mJsonArray, "content");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < mJsonArray.length(); i++) {
+
+                ContentValues cv = new ContentValues();
+                cv.put(ReviewColumns.ID_FOR, mIdFor);
+                cv.put(ReviewColumns.ID, mReviewId.get(i));
+                cv.put(ReviewColumns.AUTHOR, mAuthor.get(i));
+                cv.put(ReviewColumns.CONTENT, mContent.get(i));
+
+                try {
+                    mContext.getContentResolver().insert(MovieProvider.Reviews.CONTENT_URI, cv);
+                } catch (SQLiteConstraintException e) {
+                    mContext.getContentResolver()
+                            .update(MovieProvider.Reviews.CONTENT_URI, cv, ReviewColumns.ID + "=?",
+                                    new String[]{mReviewId.get(i)});
                 }
             }
         }
@@ -103,6 +177,11 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
     public JSONArray getArray (String string) throws JSONException {
         JSONObject jObject = new JSONObject(string);
         return jObject.getJSONArray("results");
+    }
+
+    public int getIdFor (String string) throws JSONException {
+        JSONObject jObject = new JSONObject(string);
+        return jObject.getInt("id");
     }
 
     public ArrayList<String> getPosters(JSONArray jArray) throws JSONException {
