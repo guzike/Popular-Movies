@@ -14,7 +14,6 @@ import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 
 public class ImageAdapter extends CursorAdapter {
     public Context mContext;
-    public Cursor mCursor;
 
     private int imgWidth;
     private int imgHeight;
@@ -22,7 +21,6 @@ public class ImageAdapter extends CursorAdapter {
     public ImageAdapter(Context context, Cursor c,  int flags, int width, int height) {
         super(context, c,  flags);
         mContext = context;
-        mCursor = c;
         imgWidth = width;
         imgHeight = height;
     }
