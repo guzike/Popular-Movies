@@ -2,6 +2,7 @@ package ua.com.elius.eugene.popularmovies;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -250,6 +252,40 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 });
 
                 mTrailerContainer.addView(trailerLL, trailerParams);
+
+                data.moveToNext();
+            }
+        }
+
+        if(loaderId == CURSOR_LOADER_ID_2 && data.getCount() != 0) {
+            int authorIndex = data.getColumnIndex(ReviewColumns.AUTHOR);
+            int contentIndex = data.getColumnIndex(ReviewColumns.CONTENT);
+
+            mReviewContainer.removeAllViews();
+
+            for(int i=0; i<data.getCount(); i++){
+                String author = data.getString(authorIndex);
+                String content = data.getString(contentIndex);
+
+                TextView authorView = new TextView(getActivity());
+                TextView contentView = new TextView(getActivity());
+
+                authorView.setText(author);
+                authorView.setTextColor(Color.BLACK);
+                authorView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                contentView.setText(content);
+
+                LinearLayout.LayoutParams authorViewParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                LinearLayout.LayoutParams contentViewParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                contentViewParams.setMargins(0, 0, 0, getPix(20));
+
+                mReviewContainer.addView(authorView, authorViewParams);
+                mReviewContainer.addView(contentView, contentViewParams);
 
                 data.moveToNext();
             }
