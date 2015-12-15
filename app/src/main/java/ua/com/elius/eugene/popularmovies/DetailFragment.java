@@ -213,19 +213,25 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 LinearLayout trailerLL = new LinearLayout(getActivity());
                 trailerLL.setOrientation(LinearLayout.HORIZONTAL);
                 trailerLL.setGravity(Gravity.CENTER_VERTICAL);
+                trailerLL.setClickable(true);
 
                 LinearLayout.LayoutParams trailerParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 trailerParams.setMargins(0, getPix(16), 0, getPix(16));
 
                 ImageView playView = new ImageView(getActivity());
                 playView.setImageResource(R.drawable.my_play);
 
+                LinearLayout.LayoutParams playViewParams = new LinearLayout.LayoutParams(
+                        getPix(40),
+                        getPix(40));
+                playViewParams.setMargins(getPix(16), 0, getPix(16), 0);
+
                 TextView nameView = new TextView(getActivity());
                 nameView.setText(name);
 
-                trailerLL.addView(playView);
+                trailerLL.addView(playView, playViewParams);
                 trailerLL.addView(nameView);
 
                 trailerLL.setOnClickListener(new View.OnClickListener() {
@@ -236,7 +242,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
                         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                             startActivity(intent);
-                        }else{
+                        } else {
                             Toast toast = Toast.makeText(getActivity(), "No application", Toast.LENGTH_SHORT);
                             toast.show();
                         }
