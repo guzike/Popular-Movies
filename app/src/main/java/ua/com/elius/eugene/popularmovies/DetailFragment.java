@@ -10,15 +10,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +55,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private int mMovieId;
 
     public DetailFragment(){
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        ShareActionProvider mShareActionProvider =
+                (ShareActionProvider)MenuItemCompat.getActionProvider(menuItem);
+        String temp = createShareIntent().getExtras().toString();
+        if(mShareActionProvider != null){
+            mShareActionProvider.setShareIntent(createShareIntent());
+        }
     }
 
     @Nullable
@@ -307,8 +327,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Intent createShareIntent(){
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setData(Uri.parse("https://youtu.be/" + mKey));
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+//        shareIntent.setData(Uri.parse("https://youtu.be/" + mKey));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + mKey);
         return shareIntent;
     }
 }
