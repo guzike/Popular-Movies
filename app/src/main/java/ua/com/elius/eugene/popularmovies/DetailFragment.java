@@ -44,6 +44,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private float mScale;
 
+    MenuItem mMenuItem;
+
     ImageView mBackdropView;
     TextView mOriginalTitleView;
     TextView mOverviewView;
@@ -63,14 +65,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.detail_menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_share);
+        mMenuItem = menu.findItem(R.id.action_share);
 
         mShareActionProvider =
-                (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+                (ShareActionProvider) MenuItemCompat.getActionProvider(mMenuItem);
 
         if(mShareActionProvider != null){
             mShareActionProvider.setShareIntent(null);
         }
+
+        mMenuItem.setVisible(false);
+        mMenuItem.setEnabled(false);
     }
 
     @Nullable
@@ -236,6 +241,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
                 if (i==0 && mShareActionProvider != null){
                     mShareActionProvider.setShareIntent(createShareIntent(key));
+                    mMenuItem.setVisible(true);
+                    mMenuItem.setEnabled(true);
                 }
 
                 LinearLayout trailerLL = new LinearLayout(getActivity());
