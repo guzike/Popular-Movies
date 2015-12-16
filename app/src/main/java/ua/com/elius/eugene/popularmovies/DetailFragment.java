@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -23,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +40,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID_1 = 1;
     private static final int CURSOR_LOADER_ID_2 = 2;
 
+    private ShareActionProvider mShareActionProvider;
+
     private float mScale;
-    private String mKey;
 
     ImageView mBackdropView;
     TextView mOriginalTitleView;
@@ -64,11 +65,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
-        ShareActionProvider mShareActionProvider =
-                (ShareActionProvider)MenuItemCompat.getActionProvider(menuItem);
-        String temp = createShareIntent().getExtras().toString();
+        mShareActionProvider =
+                (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
         if(mShareActionProvider != null){
-            mShareActionProvider.setShareIntent(createShareIntent());
+            mShareActionProvider.setShareIntent(null);
         }
     }
 
@@ -233,8 +234,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 final String key = data.getString(keyIndex);
                 String name = data.getString(nameIndex);
 
-                if (mKey==null || mKey.length()==0){
-                    mKey = key;
+                if (i==0 && mShareActionProvider != null){
+                    mShareActionProvider.setShareIntent(createShareIntent(key));
                 }
 
                 LinearLayout trailerLL = new LinearLayout(getActivity());
@@ -325,10 +326,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return (int) (dps * mScale + 0.5f);
     }
 
-    private Intent createShareIntent(){
+    private Intent createShareIntent(String key){
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        shareIntent.setData(Uri.parse("https://youtu.be/" + mKey));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + mKey);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + key);
         return shareIntent;
     }
 }
