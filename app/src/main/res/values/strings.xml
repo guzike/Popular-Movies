@@ -5,4 +5,6 @@
 
     <string name="pref_sort_type">SORT TYPE</string>
     <string name="pref_sort_type_default">popular</string>
+
+    <string name="action_share">Share</string>
 </resources>

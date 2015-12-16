@@ -36,6 +36,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID_2 = 2;
 
     private float mScale;
+    private String mKey;
 
     ImageView mBackdropView;
     TextView mOriginalTitleView;
@@ -212,6 +213,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 final String key = data.getString(keyIndex);
                 String name = data.getString(nameIndex);
 
+                if (mKey==null || mKey.length()==0){
+                    mKey = key;
+                }
+
                 LinearLayout trailerLL = new LinearLayout(getActivity());
                 trailerLL.setOrientation(LinearLayout.HORIZONTAL);
                 trailerLL.setGravity(Gravity.CENTER_VERTICAL);
@@ -298,5 +303,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     public int getPix(int dps){
         return (int) (dps * mScale + 0.5f);
+    }
+
+    private Intent createShareIntent(){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setData(Uri.parse("https://youtu.be/" + mKey));
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+        return shareIntent;
     }
 }
