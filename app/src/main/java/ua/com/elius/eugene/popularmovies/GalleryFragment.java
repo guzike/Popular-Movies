@@ -33,6 +33,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public static final String EXTRA_ID  = "id";
 
     public String mSortType;
+    public int mViewTag;
 
     public GridView mGridView;
     public ImageAdapter mGalleryAdapter;
@@ -92,28 +93,33 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 boolean twoPane = isTwoPane();
-                if (!twoPane) {
 
-                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                int tag = (Integer) v.getTag();
 
-                    Bundle bundle = new Bundle();
+                if(mViewTag != tag) {
+                    if (!twoPane) {
+                        Intent intent = new Intent(getActivity(), DetailActivity.class);
 
-                    bundle.putInt(EXTRA_ID, (Integer) v.getTag());
+                        Bundle bundle = new Bundle();
 
-                    intent.putExtras(bundle);
+                        bundle.putInt(EXTRA_ID, tag);
 
-                    startActivity(intent);
-                }else{
-                    Bundle bundle = new Bundle();
+                        intent.putExtras(bundle);
 
-                    bundle.putInt(EXTRA_ID, (Integer) v.getTag());
+                        startActivity(intent);
+                    } else {
+                        Bundle bundle = new Bundle();
 
-                    DetailFragment fragment = new DetailFragment();
-                    fragment.setArguments(bundle);
+                        bundle.putInt(EXTRA_ID, tag);
 
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
-                        .commit();
+                        DetailFragment fragment = new DetailFragment();
+                        fragment.setArguments(bundle);
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                .commitAllowingStateLoss();
+                    }
+                    mViewTag = tag;
                 }
             }
         });
@@ -125,6 +131,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
+        mGridView.performItemClick(mGridView.getAdapter().getView(0, null, null), 0, 0);
     }
 
     @Override
@@ -194,6 +201,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mGalleryAdapter.swapCursor(data);
+//        mGridView.performItemClick(mGridView.getAdapter().getView(0, null, null), 0, 0);
     }
 
     @Override

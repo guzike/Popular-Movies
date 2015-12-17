@@ -96,11 +96,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mTrailerContainer = (LinearLayout)rootView.findViewById(R.id.trailer_container);
         mReviewContainer = (LinearLayout)rootView.findViewById(R.id.review_container);
 
-        Bundle extras = getActivity().getIntent().getExtras();
-        Bundle args = this.getArguments();
-        if(extras != null) {
+        if(!isTwoPane()) {
+            Bundle extras = getActivity().getIntent().getExtras();
             mMovieId = extras.getInt(GalleryFragment.EXTRA_ID);
-        }else if(args != null){
+        }else{
+            Bundle args = this.getArguments();
             mMovieId = args.getInt(GalleryFragment.EXTRA_ID);
         }
 
@@ -123,7 +123,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
 
-        int pxWidth = displayMetrics.widthPixels;
+        int pxWidth;
+        if(isTwoPane()){
+            pxWidth = displayMetrics.widthPixels / 2;
+        } else {
+            pxWidth = displayMetrics.widthPixels;
+        }
 
         if (rootView.getResources().getConfiguration().orientation == 1) {
             imgWidth = pxWidth;
@@ -344,5 +349,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + key);
         return shareIntent;
+    }
+
+    public boolean isTwoPane(){
+        return getActivity().findViewById(R.id.gallery_grid) != null;
     }
 }
