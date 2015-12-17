@@ -96,7 +96,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mTrailerContainer = (LinearLayout)rootView.findViewById(R.id.trailer_container);
         mReviewContainer = (LinearLayout)rootView.findViewById(R.id.review_container);
 
-        mMovieId = getActivity().getIntent().getExtras().getInt(GalleryFragment.EXTRA_ID);
+        Bundle extras = getActivity().getIntent().getExtras();
+        Bundle args = this.getArguments();
+        if(extras != null) {
+            mMovieId = extras.getInt(GalleryFragment.EXTRA_ID);
+        }else if(args != null){
+            mMovieId = args.getInt(GalleryFragment.EXTRA_ID);
+        }
 
         new GalleryContentTask(getContext(), 1)
                 .execute("https://api.themoviedb.org/3/movie/"

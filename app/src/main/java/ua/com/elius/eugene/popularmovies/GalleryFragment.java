@@ -26,6 +26,8 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+
     private static final int CURSOR_LOADER_ID = 0;
 
     public static final String EXTRA_ID  = "id";
@@ -89,16 +91,30 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                boolean twoPane = isTwoPane();
+                if (!twoPane) {
 
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
 
-                Bundle bundle = new Bundle();
+                    Bundle bundle = new Bundle();
 
-                bundle.putInt(EXTRA_ID, (Integer)v.getTag());
+                    bundle.putInt(EXTRA_ID, (Integer) v.getTag());
 
-                intent.putExtras(bundle);
+                    intent.putExtras(bundle);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }else{
+                    Bundle bundle = new Bundle();
+
+                    bundle.putInt(EXTRA_ID, (Integer) v.getTag());
+
+                    DetailFragment fragment = new DetailFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                        .commit();
+                }
             }
         });
 
@@ -183,5 +199,9 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mGalleryAdapter.swapCursor(null);
+    }
+
+    public boolean isTwoPane(){
+        return getActivity().findViewById(R.id.movie_detail_container) != null;
     }
 }
