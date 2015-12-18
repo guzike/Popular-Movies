@@ -96,7 +96,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
                 int tag = (Integer) v.getTag();
 
-                if(mViewTag != tag) {
+                if (mViewTag != tag) {
                     if (!twoPane) {
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
 
@@ -131,7 +131,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
-        mGridView.performItemClick(mGridView.getAdapter().getView(0, null, null), 0, 0);
+
     }
 
     @Override
@@ -201,7 +201,9 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mGalleryAdapter.swapCursor(data);
-//        mGridView.performItemClick(mGridView.getAdapter().getView(0, null, null), 0, 0);
+        if (isTwoPane() && mGridView.getAdapter().getCount()!=0){
+            mGridView.performItemClick(mGridView.getAdapter().getView(0, null, null), 0, 0);
+        }
     }
 
     @Override
