@@ -13,7 +13,7 @@ public final class MovieProvider {
     public static final String AUTHORITY =
             "ua.com.elius.eugene.popularmovies.data.MovieProvider";
 
-    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path {
         String MOVIES = "movies";
