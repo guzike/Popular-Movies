@@ -34,6 +34,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public String mSortType;
     public int mViewTag;
+    public boolean mTwoPane;
 
     public GridView mGridView;
     public ImageAdapter mGalleryAdapter;
@@ -45,6 +46,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mTwoPane = isTwoPane();
     }
 
     @Nullable
@@ -76,10 +78,18 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
         DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
         int pxWidth = displayMetrics.widthPixels;
-        if (rootView.getResources().getConfiguration().orientation == 1) {
-            imgWidth = pxWidth / 2;
-        }else {
-            imgWidth = pxWidth / 4;
+        if (mTwoPane) {
+            if (rootView.getResources().getConfiguration().orientation == 1) {
+                imgWidth = pxWidth / 8;
+            } else {
+                imgWidth = pxWidth / 8;
+            }
+        }else{
+            if (rootView.getResources().getConfiguration().orientation == 1) {
+                imgWidth = pxWidth / 2;
+            } else {
+                imgWidth = pxWidth / 4;
+            }
         }
         imgHeight =(imgWidth * 278) / 185;
 
@@ -131,7 +141,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -212,6 +221,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public boolean isTwoPane(){
-        return getActivity().findViewById(R.id.movie_detail_container) != null;
+        View view = getActivity().findViewById(R.id.gallery_grid);
+        return getActivity().findViewById(R.id.gallery_grid) != null;
     }
 }
