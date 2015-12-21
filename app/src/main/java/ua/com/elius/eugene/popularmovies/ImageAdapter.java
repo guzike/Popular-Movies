@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 
 public class ImageAdapter extends CursorAdapter {
-    public Context mContext;
+    private Context mContext;
 
     private int imgWidth;
     private int imgHeight;

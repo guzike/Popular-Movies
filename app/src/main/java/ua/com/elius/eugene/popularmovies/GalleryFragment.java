@@ -32,13 +32,13 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public static final String EXTRA_ID  = "id";
 
-    public String mSortType;
-    public int mViewTag;
-    public boolean mTwoPane;
-    public boolean mTablet;
+    private String mSortType;
+    private int mViewTag;
+    private boolean mTwoPane;
+    private boolean mTablet;
 
-    public GridView mGridView;
-    public ImageAdapter mGalleryAdapter;
+    private GridView mGridView;
+    private ImageAdapter mGalleryAdapter;
 
     public GalleryFragment(){
     }
@@ -60,7 +60,8 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
         mSortType = PreferenceManager
                 .getDefaultSharedPreferences(getActivity())
-                .getString(SettingsActivity.PREF_SORT_TYPE, getString(R.string.pref_sort_type_default));
+                .getString(SettingsActivity.PREF_SORT_TYPE,
+                        getString(R.string.pref_sort_type_default));
 
         //Fetch data from the internet
         if (mSortType.contains("popular") || mSortType.contains("top_rated")) {

@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(GalleryFragment.DETAIL_FRAGMENT_TAG);
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentByTag(GalleryFragment.DETAIL_FRAGMENT_TAG);
         if(fragment != null) {
             getSupportFragmentManager().beginTransaction()
                     .remove(fragment)

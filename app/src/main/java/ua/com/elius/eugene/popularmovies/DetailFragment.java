@@ -44,16 +44,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private float mScale;
 
-    MenuItem mMenuItem;
+    private MenuItem mMenuItem;
 
-    ImageView mBackdropView;
-    TextView mOriginalTitleView;
-    TextView mOverviewView;
-    TextView mRatingView;
-    TextView mReleaseDateView;
-    Button mFavoriteButton;
-    LinearLayout mTrailerContainer;
-    LinearLayout mReviewContainer;
+    private ImageView mBackdropView;
+    private TextView mOriginalTitleView;
+    private TextView mOverviewView;
+    private TextView mRatingView;
+    private TextView mReleaseDateView;
+    private Button mFavoriteButton;
+    private LinearLayout mTrailerContainer;
+    private LinearLayout mReviewContainer;
 
     private int mMovieId;
 
@@ -292,7 +292,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                             startActivity(intent);
                         } else {
-                            Toast toast = Toast.makeText(getActivity(), "No application", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getActivity(),
+                                    "No application",
+                                    Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }

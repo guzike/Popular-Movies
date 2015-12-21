@@ -139,7 +139,9 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
                     mContext.getContentResolver().insert(MovieProvider.Trailers.CONTENT_URI, cv);
                 } catch (SQLiteConstraintException e) {
                     mContext.getContentResolver()
-                            .update(MovieProvider.Trailers.CONTENT_URI, cv, TrailerColumns.ID + "=?",
+                            .update(MovieProvider.Trailers.CONTENT_URI,
+                                    cv,
+                                    TrailerColumns.ID + "=?",
                                     new String[]{mTrailerId.get(i)});
                 }
             }
@@ -174,6 +176,7 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
             }
         }
     }
+
     public JSONArray getArray (String string) throws JSONException {
         JSONObject jObject = new JSONObject(string);
         return jObject.getJSONArray("results");
@@ -189,7 +192,8 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String posterPath = "http://image.tmdb.org/t/p/w500/" + oneObject.getString("poster_path");
+            String posterPath = "http://image.tmdb.org/t/p/w500/"
+                    + oneObject.getString("poster_path");
             posters.add(posterPath);
         }
         return posters;
@@ -200,7 +204,8 @@ public class GalleryContentTask extends AsyncTask<String, Void, String>{
         for (int i=0; i < jArray.length(); i++)
         {
             JSONObject oneObject = jArray.getJSONObject(i);
-            String backdropPath = "http://image.tmdb.org/t/p/w780/" + oneObject.getString("backdrop_path");
+            String backdropPath = "http://image.tmdb.org/t/p/w780/"
+                    + oneObject.getString("backdrop_path");
             backdrops.add(backdropPath);
         }
         return backdrops;
