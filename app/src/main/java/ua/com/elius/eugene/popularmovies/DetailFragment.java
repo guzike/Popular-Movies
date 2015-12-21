@@ -352,6 +352,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     public boolean isTwoPane(){
-        return getActivity().findViewById(R.id.gallery_grid) != null;
+        return getActivity().findViewById(R.id.gallery_container) != null;
     }
 }

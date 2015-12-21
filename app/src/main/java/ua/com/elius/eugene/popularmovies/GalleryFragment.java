@@ -26,7 +26,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
-    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
 
     private static final int CURSOR_LOADER_ID = 0;
 
@@ -126,7 +126,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
                         fragment.setArguments(bundle);
 
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                .replace(R.id.movie_detail_container, fragment, DETAIL_FRAGMENT_TAG)
                                 .commitAllowingStateLoss();
                     }
                     mViewTag = tag;
@@ -222,6 +222,6 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public boolean isTwoPane(){
         View view = getActivity().findViewById(R.id.gallery_grid);
-        return getActivity().findViewById(R.id.gallery_grid) != null;
+        return getActivity().findViewById(R.id.movie_detail_container) != null;
     }
 }
