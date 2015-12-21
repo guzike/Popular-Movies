@@ -64,7 +64,11 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
                         getString(R.string.pref_sort_type_default));
 
         //Fetch data from the internet
-        if (mSortType.contains("popular") || mSortType.contains("top_rated")) {
+        if (mSortType.contains(getResources()
+                .getStringArray(R.array.pref_sort_type_values)[0])
+                || mSortType.contains(getResources()
+                .getStringArray(R.array.pref_sort_type_values)[1])) {
+
             new GalleryContentTask(getContext(), 0)
                     .execute("https://api.themoviedb.org/3/movie/"
                             + mSortType
@@ -189,15 +193,16 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         };
 
         String selection = null;
-        if(mSortType.contains("favorite")){
+        if(mSortType.contains(getResources().getStringArray(R.array.pref_sort_type_values)[2])){
             selection = MovieColumns.FAVORITE + " > 0";
         }
 
         String sortOrder = "";
-        if(mSortType.contains("popular")) {
+        if(mSortType.contains(getResources().getStringArray(R.array.pref_sort_type_values)[0])) {
             sortOrder = MovieColumns.POPULARITY;
             sortOrder += " desc limit 20";
-        }else if(mSortType.contains("top_rated")){
+        }else if(mSortType.contains(getResources()
+                .getStringArray(R.array.pref_sort_type_values)[1])){
             sortOrder = MovieColumns.VOTE_AVERAGE;
             sortOrder += " desc limit 20";
         }

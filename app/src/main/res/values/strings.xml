@@ -7,4 +7,10 @@
     <string name="pref_sort_type_default">popular</string>
 
     <string name="action_share">Share</string>
+
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+
+    <string name="no_trailers">No trailers available</string>
+    <string name="no_reviews">No reviews available</string>
 </resources>

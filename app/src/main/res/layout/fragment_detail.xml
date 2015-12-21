@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Trailers:" />
+                    android:text="@string/trailers" />
 
                 <LinearLayout
                     android:id="@+id/trailer_container"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:gravity="center"
-                        android:text="No trailers available" />
+                        android:text="@string/no_trailers" />
 
                 </LinearLayout>
 
@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="Reviews:" />
+                    android:text="@string/reviews" />
 
                 <LinearLayout
                     android:id="@+id/review_container"
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:gravity="center"
-                        android:text="No reviews available" />
+                        android:text="@string/no_reviews" />
 
                 </LinearLayout>
 
