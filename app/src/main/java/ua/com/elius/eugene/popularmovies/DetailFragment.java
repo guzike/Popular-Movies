@@ -57,8 +57,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private int mMovieId;
 
+    private boolean mTwoPane;
+
     public DetailFragment(){
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mTwoPane = isTwoPane();
     }
 
     @Override
@@ -96,7 +104,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mTrailerContainer = (LinearLayout)rootView.findViewById(R.id.trailer_container);
         mReviewContainer = (LinearLayout)rootView.findViewById(R.id.review_container);
 
-        if(!isTwoPane()) {
+        if(!mTwoPane) {
             Bundle extras = getActivity().getIntent().getExtras();
             mMovieId = extras.getInt(GalleryFragment.EXTRA_ID);
         }else{
@@ -124,7 +132,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
 
         int pxWidth;
-        if(isTwoPane()){
+        if(mTwoPane){
             pxWidth = displayMetrics.widthPixels / 2;
         } else {
             pxWidth = displayMetrics.widthPixels;

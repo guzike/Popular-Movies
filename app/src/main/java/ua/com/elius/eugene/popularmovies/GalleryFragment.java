@@ -26,7 +26,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
 
     public final String LOG_TAG = GalleryFragment.class.getSimpleName();
 
-    private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
+    public static final String DETAIL_FRAGMENT_TAG = "DFTAG";
 
     private static final int CURSOR_LOADER_ID = 0;
 
@@ -35,6 +35,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public String mSortType;
     public int mViewTag;
     public boolean mTwoPane;
+    public boolean mTablet;
 
     public GridView mGridView;
     public ImageAdapter mGalleryAdapter;
@@ -47,6 +48,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mTwoPane = isTwoPane();
+        mTablet = isTablet();
     }
 
     @Nullable
@@ -79,18 +81,15 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
         int pxWidth = displayMetrics.widthPixels;
         if (mTwoPane) {
-            if (rootView.getResources().getConfiguration().orientation == 1) {
                 imgWidth = pxWidth / 8;
-            } else {
-                imgWidth = pxWidth / 8;
-            }
+        }else if (mTablet) {
+            imgWidth = pxWidth / 4;
+        }else if (rootView.getResources().getConfiguration().orientation == 1) {
+            imgWidth = pxWidth / 2;
         }else{
-            if (rootView.getResources().getConfiguration().orientation == 1) {
-                imgWidth = pxWidth / 2;
-            } else {
-                imgWidth = pxWidth / 4;
-            }
+            imgWidth = pxWidth / 4;
         }
+
         imgHeight =(imgWidth * 278) / 185;
 
         mGridView.setColumnWidth(imgWidth);
@@ -102,12 +101,11 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                boolean twoPane = isTwoPane();
 
                 int tag = (Integer) v.getTag();
 
                 if (mViewTag != tag) {
-                    if (!twoPane) {
+                    if (!mTwoPane) {
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
 
                         Bundle bundle = new Bundle();
@@ -221,7 +219,10 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public boolean isTwoPane(){
-        View view = getActivity().findViewById(R.id.gallery_grid);
         return getActivity().findViewById(R.id.movie_detail_container) != null;
+    }
+
+    public boolean isTablet(){
+        return getActivity().findViewById(R.id.tablet) != null;
     }
 }

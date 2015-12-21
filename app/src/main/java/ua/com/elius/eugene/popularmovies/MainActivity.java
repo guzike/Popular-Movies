@@ -2,6 +2,7 @@ package ua.com.elius.eugene.popularmovies;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,4 +20,23 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.gallery_container, new GalleryFragment(), GALLERY_FRAGMENT_TAG)
                 .commit();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(GalleryFragment.DETAIL_FRAGMENT_TAG);
+        if(fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    //    @Override
+//    protected void onDestroy() {
+//        getSupportFragmentManager().beginTransaction()
+//                .remove(getSupportFragmentManager().findFragmentByTag(GalleryFragment.DETAIL_FRAGMENT_TAG))
+//                .commit();
+//        super.onDestroy();
+//    }
 }
