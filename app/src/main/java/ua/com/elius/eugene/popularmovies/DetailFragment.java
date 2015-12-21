@@ -131,18 +131,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         DisplayMetrics displayMetrics = rootView.getResources().getDisplayMetrics();
 
-        int pxWidth;
+        int pxWidth = displayMetrics.widthPixels;
         if(mTwoPane){
-            pxWidth = displayMetrics.widthPixels / 2;
+            imgWidth = pxWidth / 2;
         } else {
-            pxWidth = displayMetrics.widthPixels;
+            imgWidth = pxWidth;
         }
 
-        if (rootView.getResources().getConfiguration().orientation == 1) {
-            imgWidth = pxWidth;
-        }else {
-            imgWidth = pxWidth;
-        }
         imgHeight =(imgWidth * 104) / 185;
         mBackdropView.getLayoutParams().width = imgWidth;
         mBackdropView.getLayoutParams().height = imgHeight;

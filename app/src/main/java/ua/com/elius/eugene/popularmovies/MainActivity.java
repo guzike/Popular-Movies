@@ -31,12 +31,4 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onSaveInstanceState(outState);
     }
-
-    //    @Override
-//    protected void onDestroy() {
-//        getSupportFragmentManager().beginTransaction()
-//                .remove(getSupportFragmentManager().findFragmentByTag(GalleryFragment.DETAIL_FRAGMENT_TAG))
-//                .commit();
-//        super.onDestroy();
-//    }
 }
