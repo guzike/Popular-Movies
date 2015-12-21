@@ -13,4 +13,7 @@
 
     <string name="no_trailers">No trailers available</string>
     <string name="no_reviews">No reviews available</string>
+
+    <string name="add_favorite">add to favorites</string>
+    <string name="del_favorite">delete from favorites</string>
 </resources>

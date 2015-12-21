@@ -235,10 +235,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mRatingView.setText(rating);
             mReleaseDateView.setText(releaseDate);
             if(favorite > 0) {
-                mFavoriteButton.setText("delete from favorites");
+                mFavoriteButton.setText(getString(R.string.del_favorite));
                 mFavoriteButton.setTag(0);
             }else{
-                mFavoriteButton.setText("add to favorites");
+                mFavoriteButton.setText(getString(R.string.add_favorite));
                 mFavoriteButton.setTag(1);
             }
         }
