@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.gallery_container, new GalleryFragment(), GALLERY_FRAGMENT_TAG)
                 .commit();
+
     }
 
     @Override
