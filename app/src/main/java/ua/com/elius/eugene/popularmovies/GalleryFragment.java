@@ -165,6 +165,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        mViewTag = 0;
     }
 
     @Override
