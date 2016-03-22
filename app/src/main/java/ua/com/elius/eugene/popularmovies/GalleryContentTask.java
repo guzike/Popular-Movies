@@ -6,16 +6,16 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.Request;
 
 import ua.com.elius.eugene.popularmovies.data.MovieColumns;
 import ua.com.elius.eugene.popularmovies.data.MovieProvider;
